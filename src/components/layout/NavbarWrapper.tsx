@@ -9,20 +9,16 @@ export default function NavbarWrapper() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    // Si NO es home → siempre visible
     if (pathname !== "/") {
       setVisible(true);
       return;
     }
 
     const handleScroll = () => {
-      if (window.scrollY > 200) {
-        setVisible(true);
-      } else {
-        setVisible(false);
-      }
+      setVisible(window.scrollY > 300);
     };
 
+    handleScroll();
     window.addEventListener("scroll", handleScroll);
 
     return () => window.removeEventListener("scroll", handleScroll);
