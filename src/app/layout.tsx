@@ -1,5 +1,5 @@
 import "./globals.css";
-import Navbar from "@/components/layout/Navbar";
+import NavbarWrapper from "@/components/layout/NavbarWrapper";
 
 export const metadata = {
   title: "Used Billiard Store",
@@ -14,7 +14,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Navbar />
+        <NavbarWrapper />
         {children}
       </body>
     </html>
