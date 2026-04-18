@@ -1,5 +1,7 @@
 export type ProductCategory = "pool-tables" | "ping-pong" | "foosball";
 
+export type ProductDetailLayout = "pool" | "standard";
+
 export type ProductCondition = "excellent" | "very-good" | "good" | "restored";
 
 export type ClothColor =
@@ -33,4 +35,5 @@ export interface Product {
   clothColors?: ClothColor[];
   dimensions?: string;
   brand?: string;
+  detailLayout: ProductDetailLayout;
 }

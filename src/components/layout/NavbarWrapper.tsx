@@ -15,7 +15,7 @@ export default function NavbarWrapper() {
     }
 
     const handleScroll = () => {
-      setVisible(window.scrollY > 300);
+      setVisible(window.scrollY > 1000);
     };
 
     handleScroll();

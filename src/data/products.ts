@@ -25,6 +25,7 @@ export const products: Product[] = [
     clothColors: ["green", "blue", "black", "burgundy"],
     dimensions: "8 ft",
     brand: "Brunswick",
+    detailLayout: "pool"
   },
   {
     id: "2",
@@ -49,6 +50,7 @@ export const products: Product[] = [
     ],
     clothColors: ["green", "blue", "red"],
     dimensions: "8 ft",
+    detailLayout: "pool"
   },
   {
     id: "3",
@@ -73,6 +75,7 @@ export const products: Product[] = [
     ],
     dimensions: "Standard size",
     brand: "Stiga",
+    detailLayout: "standard",
   },
   {
     id: "4",
@@ -95,6 +98,7 @@ export const products: Product[] = [
         alt: "Compact ping pong table",
       },
     ],
+    detailLayout:"standard"
   },
   {
     id: "5",
@@ -118,6 +122,7 @@ export const products: Product[] = [
       },
     ],
     brand: "Tornado",
+    detailLayout:"standard",
   },
   {
     id: "6",
@@ -140,5 +145,6 @@ export const products: Product[] = [
         alt: "Foosball table casual",
       },
     ],
+    detailLayout: "standard",
   },
 ];
