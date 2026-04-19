@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
 import { products } from "@/data/products";
+import PoolProductDetail from "@/components/product/detail/PoolProductDetail";
+import StandardProductDetail from "@/components/product/detail/StandardProductDetail";
 
 interface PageProps {
   params: Promise<{
@@ -14,37 +16,12 @@ export default async function ProductDetailPage({ params }: PageProps) {
 
   if (!product) return notFound();
 
-  return (
-    <main className="min-h-screen px-6 py-10 max-w-7xl mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <div className="aspect-[4/3] bg-gray-100 flex items-center justify-center rounded-xl">
-          <span className="text-gray-400">Image</span>
-        </div>
+  if (!product) return notFound();
 
-        <div className="space-y-6">
-          <h1 className="text-3xl font-bold">{product.name}</h1>
+  if (product.detailLayout === "pool") {
+    return <PoolProductDetail product={product} />;
+  }
 
-          <p className="text-gray-600">{product.description}</p>
-
-          <div className="text-xl font-semibold">
-            Starting at ${product.startingPrice}
-          </div>
-
-          <div className="text-sm text-gray-500">
-            Condition: {product.condition}
-          </div>
-
-          <div className="flex gap-4 pt-4">
-            <button className="bg-black text-white px-6 py-3 rounded-lg">
-              Request a Quote
-            </button>
-
-            <button className="border border-gray-300 px-6 py-3 rounded-lg">
-              Buy Now
-            </button>
-          </div>
-        </div>
-      </div>
-    </main>
-  );
+  return <StandardProductDetail product={product} />;
+  
 }
