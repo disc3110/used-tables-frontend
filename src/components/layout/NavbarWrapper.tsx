@@ -6,23 +6,23 @@ import Navbar from "./Navbar";
 
 export default function NavbarWrapper() {
   const pathname = usePathname();
-  const [visible, setVisible] = useState(false);
+  const isHomePage = pathname === "/";
+  const [scrolledPastHero, setScrolledPastHero] = useState(false);
 
   useEffect(() => {
-    if (pathname !== "/") {
-      setVisible(true);
-      return;
-    }
+    if (!isHomePage) return;
 
     const handleScroll = () => {
-      setVisible(window.scrollY > 1000);
+      setScrolledPastHero(window.scrollY > 1000);
     };
 
     handleScroll();
     window.addEventListener("scroll", handleScroll);
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [pathname]);
+  }, [isHomePage]);
+
+  const visible = !isHomePage || scrolledPastHero;
 
   if (!visible) return null;
 

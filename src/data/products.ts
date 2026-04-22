@@ -18,14 +18,14 @@ export const products: Product[] = [
     images: [
       {
         id: "1",
-        url: "/images/products/pool-table-1.jpg",
-        alt: "Brunswick pool table",
+        url: "/images/products/WalnutEncore.png",
+        alt: "Walnut pool table",
       },
     ],
     clothColors: ["green", "blue", "black", "burgundy"],
     dimensions: "8 ft",
     brand: "Brunswick",
-    detailLayout: "pool"
+    detailLayout: "pool",
   },
   {
     id: "2",
@@ -44,13 +44,13 @@ export const products: Product[] = [
     images: [
       {
         id: "1",
-        url: "/images/products/pool-table-2.jpg",
+        url: "/images/products/WalnutEncore.png",
         alt: "Restored pool table",
       },
     ],
     clothColors: ["green", "blue", "red"],
     dimensions: "8 ft",
-    detailLayout: "pool"
+    detailLayout: "pool",
   },
   {
     id: "3",
@@ -69,7 +69,7 @@ export const products: Product[] = [
     images: [
       {
         id: "1",
-        url: "/images/products/ping-pong-1.jpg",
+        url: "/images/products/whistler-indoor.png",
         alt: "Stiga ping pong table",
       },
     ],
@@ -94,11 +94,11 @@ export const products: Product[] = [
     images: [
       {
         id: "1",
-        url: "/images/products/ping-pong-2.jpg",
+        url: "/images/products/whistler-indoor.png",
         alt: "Compact ping pong table",
       },
     ],
-    detailLayout:"standard"
+    detailLayout: "standard",
   },
   {
     id: "5",
@@ -117,12 +117,12 @@ export const products: Product[] = [
     images: [
       {
         id: "1",
-        url: "/images/products/foosball-1.jpg",
+        url: "/images/products/tornado-classic.png",
         alt: "Foosball table",
       },
     ],
     brand: "Tornado",
-    detailLayout:"standard",
+    detailLayout: "standard",
   },
   {
     id: "6",
@@ -141,7 +141,7 @@ export const products: Product[] = [
     images: [
       {
         id: "1",
-        url: "/images/products/foosball-2.jpg",
+        url: "/images/products/tornado-classic.png",
         alt: "Foosball table casual",
       },
     ],

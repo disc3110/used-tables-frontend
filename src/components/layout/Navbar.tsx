@@ -2,10 +2,10 @@ import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <nav className="fixed top-0 left-0 z-50 w-full border-b border-gray-200 bg-white/95 backdrop-blur">
+    <nav className="fixed top-0 left-0 z-50 w-full border-b border-[#3f4768] bg-[#505a80]/92 text-white backdrop-blur">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link href="/" className="font-bold text-lg">
-          Billiard Store
+          Used Pool Tables
         </Link>
 
         <div className="hidden md:flex items-center gap-6">
@@ -24,7 +24,7 @@ export default function Navbar() {
 
         <Link
           href="/contact"
-          className="bg-black text-white px-4 py-2 rounded-lg text-sm"
+          className="rounded-lg bg-[#ffdfab] px-4 py-2 text-sm font-medium text-[#3f3120] transition hover:bg-[#ffe7bf]"
         >
           Request Quote
         </Link>

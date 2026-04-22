@@ -2,40 +2,39 @@ import Link from "next/link";
 
 export default function CategorySection() {
   return (
-    <section className="px-6 py-16 max-w-7xl mx-auto">
-      
-      {/* Header */}
-      <div className="mb-10">
-        <h2 className="text-3xl font-bold">Browse by Category</h2>
-        <p className="text-gray-500 mt-2">
-          Find the perfect table for your space.
-        </p>
-      </div>
+    <section className="bg-[#47cee6] px-6 py-20">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-10">
+          <p className="text-sm font-medium uppercase tracking-[0.22em] text-[#4d7380]">
+            Shop Your Way
+          </p>
+          <h2 className="mt-3 text-3xl font-bold text-[#27404a]">
+            Browse by Category
+          </h2>
+          <p className="mt-2 text-[#446470]">
+            Find the perfect table for your space.
+          </p>
+        </div>
 
-      {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        
-        {/* Pool Tables */}
-        <Link href="/products/pool-tables">
-          <div className="h-40 rounded-2xl bg-gray-100 flex items-center justify-center text-lg font-semibold hover:bg-gray-200 transition cursor-pointer">
-            Pool Tables
-          </div>
-        </Link>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          <Link href="/products/pool-tables">
+            <div className="flex h-40 cursor-pointer items-center justify-center rounded-2xl border border-[#79cfde] bg-white/65 text-lg font-semibold text-[#26404c] shadow-[0_18px_40px_rgba(74,120,132,0.12)] transition duration-300 hover:-translate-y-1 hover:bg-white/80">
+              Pool Tables
+            </div>
+          </Link>
 
-        {/* Ping Pong */}
-        <Link href="/products/ping-pong">
-          <div className="h-40 rounded-2xl bg-gray-100 flex items-center justify-center text-lg font-semibold hover:bg-gray-200 transition cursor-pointer">
-            Ping Pong Tables
-          </div>
-        </Link>
+          <Link href="/products/ping-pong">
+            <div className="flex h-40 cursor-pointer items-center justify-center rounded-2xl border border-[#79cfde] bg-white/65 text-lg font-semibold text-[#26404c] shadow-[0_18px_40px_rgba(74,120,132,0.12)] transition duration-300 hover:-translate-y-1 hover:bg-white/80">
+              Ping Pong Tables
+            </div>
+          </Link>
 
-        {/* Foosball */}
-        <Link href="/products/foosball">
-          <div className="h-40 rounded-2xl bg-gray-100 flex items-center justify-center text-lg font-semibold hover:bg-gray-200 transition cursor-pointer">
-            Foosball Tables
-          </div>
-        </Link>
-
+          <Link href="/products/foosball">
+            <div className="flex h-40 cursor-pointer items-center justify-center rounded-2xl border border-[#79cfde] bg-white/65 text-lg font-semibold text-[#26404c] shadow-[0_18px_40px_rgba(74,120,132,0.12)] transition duration-300 hover:-translate-y-1 hover:bg-white/80">
+              Foosball Tables
+            </div>
+          </Link>
+        </div>
       </div>
     </section>
   );
