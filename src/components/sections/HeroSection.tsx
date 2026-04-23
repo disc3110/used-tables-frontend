@@ -26,6 +26,8 @@ const railMarkerClasses = [
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const hasSnappedRef = useRef(false);
+  const lastProgressRef = useRef(0);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -50,11 +52,38 @@ export default function HeroSection() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    const isScrollingDown = progress > lastProgressRef.current;
+    const featuredProductsSection = document.getElementById("featured-products");
+
+    if (
+      isScrollingDown &&
+      progress >= 0.88 &&
+      featuredProductsSection &&
+      !hasSnappedRef.current
+    ) {
+      hasSnappedRef.current = true;
+
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      featuredProductsSection.scrollIntoView({
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+        block: "start",
+      });
+    } else if (progress < 0.72) {
+      hasSnappedRef.current = false;
+    }
+
+    lastProgressRef.current = progress;
+  }, [progress]);
+
   const ballsGone = progress > 0.88;
   const easedProgress = 1 - Math.pow(1 - Math.min(progress, 1), 3);
 
   return (
-    <section ref={sectionRef} className="relative h-[220vh]">
+    <section ref={sectionRef} className="snap-start relative h-[220vh]">
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#e7e8ee]">
         {/* Mesa */}
         <div className="absolute inset-x-0 top-[4.5%] flex items-center justify-center px-4 md:top-[5.5%]">
@@ -74,8 +103,11 @@ export default function HeroSection() {
                 <span className="text-[2.9rem] font-light tracking-[0.2em] leading-none uppercase md:text-[4.9rem]">
                   USED
                 </span>
-                <span className="mt-3 text-[1rem] font-light tracking-[0.38em] leading-none uppercase md:text-[1.7rem]">
+                <span className="mt-1 text-[2.9rem] font-light tracking-[0.38em] leading-none uppercase md:text-[4.9rem]">
                   BILLIARDS
+                </span>
+                <span className="mt-5 text-[1.9rem] font-light tracking-[0.38em] leading-none uppercase md:text-[1.7rem]">
+                  Best Second hand tables in Metro Vancouver
                 </span>
               </div>
             </div>

@@ -6,7 +6,7 @@ export default function FeaturedProductsSection() {
   const featuredProducts = products.filter((p) => p.featured);
 
   return (
-    <section className="bg-[#ffdfab] px-6 py-24">
+    <section id="featured-products" className="bg-[#ffdfab] px-6 py-24 snap-start">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">

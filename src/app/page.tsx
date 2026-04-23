@@ -6,7 +6,7 @@ import CTASection from "@/components/sections/CTASection";
 
 export default function HomePage() {
   return (
-    <main className="bg-[#f7f3eb]">
+    <main className="bg-[#f7f3eb] scroll-smooth snap-y snap-mandatory">
       <HeroSection />
       <FeaturedProductsSection />
       <CategorySection />
