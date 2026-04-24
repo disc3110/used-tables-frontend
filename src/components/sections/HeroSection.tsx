@@ -66,13 +66,14 @@ export default function HeroSection() {
     return 1 - (value - start) / (end - start);
   };
 
-  const desktopBallFade = fadeBetween(progress, 0.98, 1);
+  const desktopBallFade = fadeBetween(progress, 0.985, 1);
   const desktopBallScale = 0.2 + 0.8 * desktopBallFade;
   const mobilePortraitBallFade = fadeBetween(progress, 0.96, 1);
   const compactContentOffset = ballMode === "compact" ? easedProgress * 18 : 0;
   const compactContentOpacity =
     ballMode === "compact" ? 1 - easedProgress * 0.14 : 1;
-  const compactBackgroundOffset = ballMode === "compact" ? easedProgress * 14 : 0;
+  const compactBackgroundOffset =
+    ballMode === "compact" ? easedProgress * 14 : 0;
 
   return (
     <section ref={sectionRef} className="relative h-[220vh]">
@@ -168,12 +169,12 @@ export default function HeroSection() {
           {ballMode !== "compact" ? (
             <>
               <div
-                className="absolute left-[45%] top-[64%] flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-[radial-gradient(circle_at_30%_30%,#3a3a3a_0%,#0e0e0e_45%,#050505_100%)] text-sm font-bold text-white shadow-[0_10px_16px_rgba(0,0,0,0.24),0_18px_16px_rgba(0,0,0,0.12),inset_0_-3px_5px_rgba(0,0,0,0.28)] transition-opacity duration-200 md:left-[47%] md:top-[58%] md:h-10 md:w-10 md:text-base"
+                className="absolute left-[45%] top-[64%] flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-[radial-gradient(circle_at_30%_30%,#3a3a3a_0%,#0e0e0e_45%,#050505_100%)] text-sm font-bold text-white shadow-[0_10px_16px_rgba(0,0,0,0.24),0_18px_16px_rgba(0,0,0,0.12),inset_0_-3px_5px_rgba(0,0,0,0.28)] transition-opacity duration-200 md:left-[49%] md:top-[64%] md:h-10 md:w-10 md:text-base"
                 style={{
                   transform:
                     ballMode === "mobilePortrait"
                       ? `translate(${-easedProgress * 44}px, ${easedProgress * 36}px)`
-                      : `translate(${-easedProgress * 380}px, ${-easedProgress * 30}px) scale(${desktopBallScale})`,
+                      : `translate(${-easedProgress * 440}px, ${-easedProgress * 78}px) scale(${desktopBallScale})`,
                   opacity:
                     ballMode === "mobilePortrait"
                       ? 0.9 * mobilePortraitBallFade
@@ -187,12 +188,12 @@ export default function HeroSection() {
               </div>
 
               <div
-                className="absolute left-[56%] top-[66%] flex h-8 w-8 items-center justify-center rounded-full border border-white/25 bg-[radial-gradient(circle_at_30%_30%,#f6d36a_0%,#e0b84a_45%,#b88900_100%)] text-sm font-bold text-black shadow-[0_10px_16px_rgba(0,0,0,0.22),0_18px_16px_rgba(0,0,0,0.11),inset_0_-3px_5px_rgba(0,0,0,0.2)] transition-opacity duration-200 md:left-[53%] md:top-[60%] md:h-10 md:w-10 md:text-base"
+                className="absolute left-[56%] top-[66%] flex h-8 w-8 items-center justify-center rounded-full border border-white/25 bg-[radial-gradient(circle_at_30%_30%,#f6d36a_0%,#e0b84a_45%,#b88900_100%)] text-sm font-bold text-black shadow-[0_10px_16px_rgba(0,0,0,0.22),0_18px_16px_rgba(0,0,0,0.11),inset_0_-3px_5px_rgba(0,0,0,0.2)] transition-opacity duration-200 md:left-[52%] md:top-[65%] md:h-10 md:w-10 md:text-base"
                 style={{
                   transform:
                     ballMode === "mobilePortrait"
                       ? `translate(${easedProgress * 52}px, ${easedProgress * 40}px)`
-                      : `translate(${easedProgress * 380}px, ${-easedProgress * 60}px) scale(${desktopBallScale})`,
+                      : `translate(${easedProgress * 405}px, ${-easedProgress * 90}px) scale(${desktopBallScale})`,
                   opacity:
                     ballMode === "mobilePortrait"
                       ? 0.88 * mobilePortraitBallFade
