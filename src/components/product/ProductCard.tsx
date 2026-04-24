@@ -4,6 +4,7 @@ import type { Product } from "@/types/product";
 
 interface ProductCardProps {
   product: Product;
+  variant?: "default" | "featured";
 }
 
 const categoryLabelMap: Record<Product["category"], string> = {
@@ -12,11 +13,20 @@ const categoryLabelMap: Record<Product["category"], string> = {
   foosball: "Foosball",
 };
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({
+  product,
+  variant = "default",
+}: ProductCardProps) {
+  const isFeatured = variant === "featured";
+
   return (
     <Link href={`/products/${product.slug}`} className="group block">
       <article className="flex h-full flex-col overflow-hidden rounded-[1.85rem] border border-[#e6dbc9] bg-[#fffdf9] shadow-[0_20px_44px_rgba(47,37,23,0.08)] transition duration-300 hover:-translate-y-2 hover:shadow-[0_30px_60px_rgba(47,37,23,0.14)]">
-        <div className="relative h-72 w-full overflow-hidden rounded-t-[1.85rem] bg-[linear-gradient(180deg,#ece3d5_0%,#e2d7c7_100%)]">
+        <div
+          className={`relative w-full overflow-hidden rounded-t-[1.85rem] bg-[linear-gradient(180deg,#ece3d5_0%,#e2d7c7_100%)] ${
+            isFeatured ? "aspect-[16/10]" : "h-72"
+          }`}
+        >
           <div className="absolute left-5 top-5 z-10 rounded-full bg-[#112030]/92 px-4 py-2 text-[0.7rem] font-medium uppercase tracking-[0.18em] text-white shadow-[0_8px_18px_rgba(6,12,20,0.22)]">
             {categoryLabelMap[product.category]}
           </div>
@@ -27,7 +37,9 @@ export default function ProductCard({ product }: ProductCardProps) {
               alt={product.images[0].alt || product.name}
               fill
               sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 25vw"
-              className="object-cover transition duration-500 group-hover:scale-[1.04]"
+              className={`transition duration-500 group-hover:scale-[1.04] ${
+                isFeatured ? "object-contain p-6" : "object-cover"
+              }`}
             />
           ) : (
             <div className="flex h-full items-center justify-center bg-[radial-gradient(circle_at_top,#f4ebdf_0%,#e0d4c2_100%)]">
@@ -40,7 +52,11 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         <div className="flex flex-1 flex-col justify-between p-6">
           <div>
-            <h3 className="text-[2rem] leading-[1.02] text-[#0f2030] [font-family:Georgia,Times,'Times_New_Roman',serif]">
+            <h3
+              className={`leading-[1.02] text-[#0f2030] [font-family:Georgia,Times,'Times_New_Roman',serif] ${
+                isFeatured ? "text-[1.7rem]" : "text-[2rem]"
+              }`}
+            >
               {product.name}
             </h3>
 

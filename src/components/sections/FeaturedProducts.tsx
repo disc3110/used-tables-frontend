@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ProductGrid from "@/components/product/ProductGrid";
+import FeaturedProductsCarousel from "@/components/product/FeaturedProductsCarousel";
 import TrustBenefits from "@/components/sections/TrustBenefits";
 import { products } from "@/data/products";
 
@@ -41,7 +41,7 @@ export default function FeaturedProductsSection() {
           </Link>
         </div>
 
-        <ProductGrid products={featuredProducts} />
+        <FeaturedProductsCarousel products={featuredProducts} />
         <TrustBenefits />
       </div>
     </section>

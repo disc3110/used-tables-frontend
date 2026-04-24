@@ -16,14 +16,14 @@ export default function WhyUsSection() {
         "Our technicians meticulously inspect it for any imperfections, scratches, or unevenness. They use precision tools to measure the slate's flatness and ensure it meets regulation standards for accurate ball roll.",
     },
     {
-      title: "Felt and Cloth",
+      title: "Cloth Quality ",
       description:
         "The playing surface cloth plays a significant role in the game's quality. This table comes included with your choice of new cloth. With almost 30 different cloth colours in stock.",
     },
   ];
 
   return (
-    <section className="bg-[linear-gradient(180deg,#f2e8d9_0%,#efe4d4_100%)] px-6 py-24 md:py-28">
+    <section className="bg-[radial-gradient(circle_at_top,#fffaf2_0%,#f6efe3_52%,#f3eadb_100%)] px-6 py-24 md:py-28">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12">
           <p className="text-sm font-medium uppercase tracking-[0.26em] text-[#a46f24]">
