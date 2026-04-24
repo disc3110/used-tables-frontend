@@ -6,53 +6,66 @@ interface ProductCardProps {
   product: Product;
 }
 
+const categoryLabelMap: Record<Product["category"], string> = {
+  "pool-tables": "Billiard",
+  "ping-pong": "Ping Pong",
+  foosball: "Foosball",
+};
+
 export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link href={`/products/${product.slug}`} className="group block">
-      <div className="h-full flex flex-col overflow-hidden rounded-[1.75rem] border border-[#e1e3ea] bg-white shadow-[0_20px_50px_rgba(90,92,110,0.12)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_30px_70px_rgba(90,92,110,0.18)]">
-        {/* Image */}
-        <div className="relative h-56 w-full overflow-hidden bg-[#f2f3f7]">
+      <article className="flex h-full flex-col overflow-hidden rounded-[1.85rem] border border-[#e6dbc9] bg-[#fffdf9] shadow-[0_20px_44px_rgba(47,37,23,0.08)] transition duration-300 hover:-translate-y-2 hover:shadow-[0_30px_60px_rgba(47,37,23,0.14)]">
+        <div className="relative h-72 w-full overflow-hidden rounded-t-[1.85rem] bg-[linear-gradient(180deg,#ece3d5_0%,#e2d7c7_100%)]">
+          <div className="absolute left-5 top-5 z-10 rounded-full bg-[#112030]/92 px-4 py-2 text-[0.7rem] font-medium uppercase tracking-[0.18em] text-white shadow-[0_8px_18px_rgba(6,12,20,0.22)]">
+            {categoryLabelMap[product.category]}
+          </div>
+
           {product.images && product.images.length > 0 ? (
             <Image
               src={product.images[0].url}
               alt={product.images[0].alt || product.name}
               fill
-              sizes="(max-width: 768px) 100vw, 33vw"
-              className="object-cover"
+              sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 25vw"
+              className="object-cover transition duration-500 group-hover:scale-[1.04]"
             />
           ) : (
-            <div className="flex h-full items-center justify-center">
-              <span className="text-sm tracking-[0.2em] text-[#9aa0b3] uppercase">
-                Image
+            <div className="flex h-full items-center justify-center bg-[radial-gradient(circle_at_top,#f4ebdf_0%,#e0d4c2_100%)]">
+              <span className="rounded-full border border-[#c7b9a3] px-4 py-2 text-xs font-medium uppercase tracking-[0.24em] text-[#8d7b60]">
+                Product Preview
               </span>
             </div>
           )}
         </div>
 
-        {/* Content */}
-        <div className="flex flex-col justify-between flex-1 space-y-4 p-5">
+        <div className="flex flex-1 flex-col justify-between p-6">
           <div>
-            <h3 className="text-lg font-medium tracking-[0.08em] text-[#4f5363] uppercase">
+            <h3 className="text-[2rem] leading-[1.02] text-[#0f2030] [font-family:Georgia,Times,'Times_New_Roman',serif]">
               {product.name}
             </h3>
 
-            <p className="mt-2 text-sm leading-6 text-[#666b7d]">
+            <p className="mt-4 text-[1rem] leading-8 text-[#4e5157]">
               {product.shortDescription}
             </p>
           </div>
 
-          {/* Price + CTA */}
-          <div className="flex items-center justify-between pt-2">
-            <span className="text-base font-medium text-[#4f5363]">
+          <div className="mt-8 flex items-end justify-between gap-4 border-t border-[#ede2d2] pt-5">
+            <span className="text-[2rem] font-semibold leading-none text-[#101f2e]">
               ${product.startingPrice}
             </span>
 
-            <span className="text-xs font-medium tracking-[0.18em] text-[#7b8094] uppercase group-hover:text-[#4f5363] transition">
-              View Details →
+            <span className="inline-flex items-center gap-2 text-sm font-medium text-[#9b6c28] transition group-hover:text-[#7b5218]">
+              <span>View Details</span>
+              <span
+                aria-hidden="true"
+                className="text-base leading-none transition duration-300 group-hover:translate-x-1"
+              >
+                &rarr;
+              </span>
             </span>
           </div>
         </div>
-      </div>
+      </article>
     </Link>
   );
 }
