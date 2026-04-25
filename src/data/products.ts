@@ -4,12 +4,12 @@ export const products: Product[] = [
   {
     id: "1",
     sku: "POOL-001",
-    slug: "brunswick-used-pool-table",
-    name: "Brunswick Used Pool Table",
+    slug: "BERINGER-used-pool-table",
+    name: "BERINGER - 8ft",
     category: "pool-tables",
     shortDescription: "Classic pool table in excellent condition.",
     description:
-      "A well-maintained Brunswick table with a solid frame and smooth playing surface. Perfect for home or recreational use.",
+      "A well-maintained BERINGER table with a solid frame and smooth playing surface. Perfect for home or recreational use.",
     startingPrice: 2499,
     condition: "excellent",
     available: true,
@@ -18,13 +18,13 @@ export const products: Product[] = [
     images: [
       {
         id: "1",
-        url: "/images/products/WalnutEncore.png",
+        url: "/images/products/beringer-1.png",
         alt: "Walnut pool table",
       },
     ],
     clothColors: ["green", "blue", "black", "burgundy"],
     dimensions: "8 ft",
-    brand: "Brunswick",
+    brand: "BERINGER",
     detailLayout: "pool",
   },
   {
@@ -33,7 +33,7 @@ export const products: Product[] = [
     slug: "restored-pool-table",
     name: "Restored Pool Table",
     category: "pool-tables",
-    shortDescription: "Fully restored table with new cloth.",
+    shortDescription: "Fully restored table blah blah.",
     description:
       "This table has been professionally restored and includes new cloth and leveling.",
     startingPrice: 2899,
@@ -55,12 +55,12 @@ export const products: Product[] = [
   {
     id: "3",
     sku: "PING-001",
-    slug: "stiga-ping-pong-table",
-    name: "Stiga Ping Pong Table",
+    slug: "whistler-ping-pong-table",
+    name: "Whistler Ping Pong Table",
     category: "ping-pong",
     shortDescription: "Foldable and durable ping pong table.",
     description:
-      "A solid ping pong table perfect for home or office use. Easy to fold and store.",
+      "The consistently even surface delivers a reliable bounce across the table, keeping rallies smooth and every point decided by skill. Solid, stable, and refined in design, the Whistler pairs professional-level play with a sleek look suited to modern interiors.",
     startingPrice: 799,
     condition: "very-good",
     available: true,

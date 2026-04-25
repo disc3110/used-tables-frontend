@@ -6,21 +6,21 @@ const categories = [
     title: "Pool Tables",
     href: "/products/pool-tables",
     cta: "Shop Pool Tables",
-    imageSrc: "/images/products/WalnutEncore.png",
+    imageSrc: "/images/categories/pool-background.png",
     imageAlt: "Pool table",
   },
   {
     title: "Ping Pong Tables",
     href: "/products/ping-pong",
     cta: "Shop Ping Pong Tables",
-    imageSrc: "/images/products/whistler-indoor.png",
+    imageSrc: "/images/categories/ping-pong-background.png",
     imageAlt: "Ping pong table",
   },
   {
     title: "Foosball Tables",
     href: "/products/foosball",
     cta: "Shop Foosball Tables",
-    imageSrc: "/images/products/tornado-classic.png",
+    imageSrc: "/images/categories/foosball-background.png",
     imageAlt: "Foosball table",
   },
 ];
@@ -43,7 +43,11 @@ export default function CategorySection() {
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           {categories.map((category) => (
-            <Link key={category.title} href={category.href} className="group block">
+            <Link
+              key={category.title}
+              href={category.href}
+              className="group block"
+            >
               <article className="overflow-hidden rounded-[1.8rem] border border-[#e5d9c9] bg-[#fffdfa] shadow-[0_18px_42px_rgba(46,34,20,0.08)] transition duration-300 hover:-translate-y-2 hover:shadow-[0_28px_58px_rgba(46,34,20,0.14)]">
                 <div className="relative h-72 overflow-hidden">
                   <Image
