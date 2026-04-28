@@ -1,14 +1,19 @@
-import ProductGrid from "@/components/product/ProductGrid";
+import CategoryLandingPage from "@/components/sections/CategoryLandingPage";
 import { getProductsByCategory } from "@/lib/products";
 
 export default function PoolTablesPage() {
   const products = getProductsByCategory("pool-tables");
 
   return (
-    <main className="min-h-screen px-6 py-10 max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8">Pool Tables</h1>
-
-      <ProductGrid products={products} />
-    </main>
+    <CategoryLandingPage
+      title="Pool Tables"
+      description="Discover premium used pool tables selected for craftsmanship, playability, and timeless game-room presence."
+      heroImageSrc="/images/categories/pool-background.png"
+      heroImageAlt="Luxury pool table in a premium game room"
+      sellTitle="Looking to sell your pool table?"
+      sellImageSrc="/images/hero/used-table-vancouver.png"
+      sellImageAlt="Used pool table in a premium showroom"
+      products={products}
+    />
   );
 }
