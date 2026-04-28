@@ -230,6 +230,36 @@ export default function PoolProductDetail({ product }: Props) {
               </p>
             </div>
 
+            <div className="rounded-[1.8rem] border border-[#e3d5c1] bg-[#fffaf3] p-6 shadow-[0_16px_34px_rgba(47,35,22,0.06)] md:p-7">
+              <h2 className="text-[1.55rem] leading-[1.04] text-[#0f2030] [font-family:Georgia,Times,'Times_New_Roman',serif]">
+                Included with your table
+              </h2>
+
+              <div className="mt-5 space-y-3">
+                {[
+                  "Professional installation included",
+                  "Basic accessory kit included",
+                  "Cloth color choice included",
+                ].map((item) => (
+                  <div key={item} className="flex items-start gap-3">
+                    <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#f5e4bc] text-[#9b6c28]">
+                      <svg aria-hidden="true" viewBox="0 0 20 20" className="h-3.5 w-3.5">
+                        <path
+                          d="M4.5 10.5L8 14l7.5-8"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                    <p className="text-sm leading-7 text-[#24313f]">{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             <div className="rounded-[2rem] border border-[#e3d5c1] bg-[#fffdfa] p-7 shadow-[0_22px_46px_rgba(47,35,22,0.08)] md:p-8">
               <button
                 type="button"

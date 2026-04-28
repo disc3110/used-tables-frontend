@@ -8,6 +8,10 @@ interface CategoryLandingPageProps {
   description: string;
   heroImageSrc: string;
   heroImageAlt: string;
+  includedItems?: Array<{
+    title: string;
+    description: string;
+  }>;
   sellTitle: string;
   sellImageSrc: string;
   sellImageAlt: string;
@@ -45,6 +49,7 @@ export default function CategoryLandingPage({
   description,
   heroImageSrc,
   heroImageAlt,
+  includedItems,
   sellTitle,
   sellImageSrc,
   sellImageAlt,
@@ -112,6 +117,48 @@ export default function CategoryLandingPage({
           </div>
         </div>
       </section>
+
+      {includedItems?.length ? (
+        <section className="px-6 pb-6 md:pb-8">
+          <div className="mx-auto max-w-7xl rounded-[1.9rem] border border-[#e4d8c8] bg-[#fffdfa] px-7 py-7 shadow-[0_14px_34px_rgba(47,35,22,0.06)] md:px-8 md:py-8">
+            <div className="mb-6">
+              <h2 className="text-[2rem] leading-[1.02] text-[#0f2030] [font-family:Georgia,Times,'Times_New_Roman',serif]">
+                Included with every pool table
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+              {includedItems.map((item, index) => (
+                <div
+                  key={item.title}
+                  className={`flex gap-4 md:px-2 ${index > 0 ? "md:border-l md:border-[#ece2d4] md:pl-6" : ""}`}
+                >
+                  <div className="mt-1 shrink-0 text-[#b27a2a]">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-6 w-6">
+                      <path
+                        d="M5 13l4 4L19 7"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-xl leading-[1.1] text-[#102131] [font-family:Georgia,Times,'Times_New_Roman',serif]">
+                      {item.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-7 text-[#4e5157]">
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section id="browse-products" className="px-6 py-18 md:py-22">
         <div className="mx-auto max-w-7xl">
