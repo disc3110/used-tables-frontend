@@ -6,14 +6,14 @@ export default function WhyUsSection() {
         "Our technicians carefully assess the overall structural integrity of the pool table. They check for any signs of warping, bending, or damage to the frame and legs, ensuring that the table's foundation is sturdy and stable.",
     },
     {
-      title: "Delivery and Setup Available",
-      description:
-        "Installation and setup options may be available on select tables within metro Vancouver.",
-    },
-    {
       title: "Playing Surface",
       description:
-        "Our technicians meticulously inspect it for any imperfections, scratches, or unevenness. They use precision tools to measure the slate's flatness and ensure it meets regulation standards for accurate ball roll.",
+        "Our technicians meticulously inspect it for any imperfections, scratches, or unevenness. They use precision tools to measure the slate's flatness and ensure it meets regulation standards for accurate ball roll. ",
+    },
+    {
+      title: "Rails and Cushions",
+      description:
+        "Properly functioning rails and cushions are vital for optimal gameplay. You never have to worry about dead rails when purchasing a table with us.",
     },
     {
       title: "Cloth Quality ",
@@ -33,7 +33,9 @@ export default function WhyUsSection() {
             Why Buy From Us
           </h2>
           <p className="mt-4 max-w-2xl text-lg leading-8 text-[#4b4e53]">
-            A more reliable way to shop for used game tables.
+            A more reliable way to shop for used game tables. When inspecting a
+            pre-owned pool table, our technicians thoroughly examine the
+            following key aspects:
           </p>
         </div>
 

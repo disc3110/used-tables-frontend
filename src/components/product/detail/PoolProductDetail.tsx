@@ -85,8 +85,12 @@ const clothMaskStyles = (color: string) => ({
 });
 
 export default function PoolProductDetail({ product }: Props) {
-  const [selectedColor, setSelectedColor] = useState<ClothOption>(clothOptions[0]);
-  const [selectedPackage, setSelectedPackage] = useState(accessoryPackages[0].id);
+  const [selectedColor, setSelectedColor] = useState<ClothOption>(
+    clothOptions[0],
+  );
+  const [selectedPackage, setSelectedPackage] = useState(
+    accessoryPackages[0].id,
+  );
   const [isClothOpen, setIsClothOpen] = useState(false);
 
   const galleryItems = useMemo<GalleryItem[]>(
@@ -122,7 +126,12 @@ export default function PoolProductDetail({ product }: Props) {
 
   const detailItems = [
     { label: "Size", value: product.dimensions ?? "8 ft" },
-    { label: "Material", value: product.brand ? `${product.brand} hardwood frame` : "Hardwood frame" },
+    {
+      label: "Material",
+      value: product.brand
+        ? `${product.brand} hardwood frame`
+        : "Hardwood frame",
+    },
     { label: "Pockets", value: "Leather drop pockets" },
     { label: "Condition", value: conditionLabels[product.condition] },
   ];
@@ -228,6 +237,40 @@ export default function PoolProductDetail({ product }: Props) {
               <p className="mt-6 text-lg leading-8 text-[#4e5157]">
                 {product.shortDescription}
               </p>
+            </div>
+
+            <div className="rounded-[1.8rem] border border-[#e3d5c1] bg-[#fffaf3] p-6 shadow-[0_16px_34px_rgba(47,35,22,0.06)] md:p-7">
+              <h2 className="text-[1.55rem] leading-[1.04] text-[#0f2030] [font-family:Georgia,Times,'Times_New_Roman',serif]">
+                Included with your table
+              </h2>
+
+              <div className="mt-5 space-y-3">
+                {[
+                  "Professional installation included (In Metro Vancouver)",
+                  "Basic accessory kit included",
+                  "Cloth color choice included",
+                ].map((item) => (
+                  <div key={item} className="flex items-start gap-3">
+                    <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#f5e4bc] text-[#9b6c28]">
+                      <svg
+                        aria-hidden="true"
+                        viewBox="0 0 20 20"
+                        className="h-3.5 w-3.5"
+                      >
+                        <path
+                          d="M4.5 10.5L8 14l7.5-8"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                    <p className="text-sm leading-7 text-[#24313f]">{item}</p>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div className="rounded-[2rem] border border-[#e3d5c1] bg-[#fffdfa] p-7 shadow-[0_22px_46px_rgba(47,35,22,0.08)] md:p-8">
@@ -346,7 +389,9 @@ export default function PoolProductDetail({ product }: Props) {
                     <p className="text-xs font-medium uppercase tracking-[0.22em] text-[#a46f24]">
                       {item.label}
                     </p>
-                    <p className="mt-2 text-base text-[#122233]">{item.value}</p>
+                    <p className="mt-2 text-base text-[#122233]">
+                      {item.value}
+                    </p>
                   </div>
                 ))}
               </div>
