@@ -74,6 +74,9 @@ npm run build:backend
 - Install command: `npm install`
 - Environment variables:
   - `BACKEND_API_URL`: Railway API URL, including `/api`
+- Image uploads go through the admin panel route `/api/uploads/image`, which
+  forwards the file to `${BACKEND_API_URL}/admin/uploads/image` with the admin
+  auth token.
 
 ### Backend on Railway
 
@@ -91,7 +94,8 @@ npm run build:backend
   - `CLOUDINARY_CLOUD_NAME`
   - `CLOUDINARY_API_KEY`
   - `CLOUDINARY_API_SECRET`
-  - `CLOUDINARY_FOLDER`
+  - `CLOUDINARY_FOLDER`: set to `used-billiard-store`; product images are
+    uploaded to `used-billiard-store/products`
 
 Run Prisma commands from `backend/` when needed:
 
