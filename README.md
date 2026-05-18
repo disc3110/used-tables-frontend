@@ -1,36 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Used Billiard Store
 
-## Getting Started
+Monorepo for the public storefront, admin panel, and backend API.
 
-First, run the development server:
+## Structure
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```text
+used-billiard-store/
+  storefront/    Public Next.js storefront
+  admin-panel/   Admin Next.js app
+  backend/       NestJS API and Prisma schema
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Each app has its own `package.json` and can be installed, run, built, and
+deployed from its own folder.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Local Setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Install dependencies per app:
 
-## Learn More
+```bash
+npm --prefix storefront install
+npm --prefix admin-panel install
+npm --prefix backend install
+```
 
-To learn more about Next.js, take a look at the following resources:
+Create local env files from the examples:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+cp storefront/.env.example storefront/.env.local
+cp admin-panel/.env.example admin-panel/.env.local
+cp backend/.env.example backend/.env
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Run locally:
 
-## Deploy on Vercel
+```bash
+npm run dev:backend
+npm run dev:storefront
+npm run dev:admin
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Default local URLs:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Storefront: `http://localhost:3000`
+- Admin panel: `http://localhost:3001`
+- Backend API: `http://localhost:4000/api`
+
+## Verification Commands
+
+```bash
+npm run lint:storefront
+npm run build:storefront
+npm run lint:admin
+npm run build:admin
+npm run lint:backend
+npm run build:backend
+```
+
+## Deployment
+
+### Storefront on Vercel
+
+- Project root directory: `storefront`
+- Build command: `npm run build`
+- Install command: `npm install`
+- Environment variables:
+  - `BACKEND_API_URL`: Railway API URL, including `/api`
+
+### Admin Panel on Vercel
+
+- Project root directory: `admin-panel`
+- Build command: `npm run build`
+- Install command: `npm install`
+- Environment variables:
+  - `BACKEND_API_URL`: Railway API URL, including `/api`
+
+### Backend on Railway
+
+- Project root directory: `backend`
+- Build command: `npm run build`
+- Start command: `npm run start:prod`
+- Environment variables:
+  - `PORT`
+  - `API_PREFIX`
+  - `FRONTEND_URL`
+  - `ADMIN_PANEL_URL`
+  - `DATABASE_URL`
+  - `JWT_SECRET`
+  - `JWT_EXPIRES_IN`
+  - `CLOUDINARY_CLOUD_NAME`
+  - `CLOUDINARY_API_KEY`
+  - `CLOUDINARY_API_SECRET`
+  - `CLOUDINARY_FOLDER`
+
+Run Prisma commands from `backend/` when needed:
+
+```bash
+npm run prisma:generate
+npm run prisma:migrate:dev
+npm run prisma:seed
+```

@@ -1,0 +1,8 @@
+ALTER TABLE "ContactInquiry"
+ADD COLUMN "status" TEXT NOT NULL DEFAULT 'new';
+
+ALTER TABLE "QuoteRequest"
+ADD COLUMN "status" TEXT NOT NULL DEFAULT 'new';
+
+ALTER TABLE "SellRequest"
+ADD COLUMN "status" TEXT NOT NULL DEFAULT 'new';
