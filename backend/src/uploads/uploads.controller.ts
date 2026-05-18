@@ -1,7 +1,9 @@
 import {
   BadRequestException,
   Controller,
+  Logger,
   Post,
+  UnsupportedMediaTypeException,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -28,6 +30,8 @@ import { CloudinaryService } from "./cloudinary.service";
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles(Role.Admin)
 export class UploadsController {
+  private readonly logger = new Logger(UploadsController.name);
+
   constructor(private readonly cloudinaryService: CloudinaryService) {}
 
   @Post("image")
@@ -50,11 +54,22 @@ export class UploadsController {
       buffer: Buffer;
       mimetype: string;
       originalname: string;
+      size?: number;
     },
   ) {
     if (!file) {
       throw new BadRequestException("Image file is required.");
     }
+
+    if (!file.mimetype.startsWith("image/")) {
+      throw new UnsupportedMediaTypeException(
+        `Unsupported file type "${file.mimetype}". Please upload an image file.`,
+      );
+    }
+
+    this.logger.log(
+      `Received product image upload: ${file.originalname} (${file.mimetype}, ${file.size ?? file.buffer.length} bytes).`,
+    );
 
     return this.cloudinaryService.uploadImage(file);
   }
