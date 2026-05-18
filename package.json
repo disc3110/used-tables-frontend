@@ -1,26 +1,25 @@
 {
-  "name": "used-billiard-store",
+  "name": "used-billiard-store-monorepo",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "next": "16.2.3",
-    "react": "19.2.4",
-    "react-dom": "19.2.4"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.2.3",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "dev": "npm --prefix storefront run dev",
+    "build": "npm --prefix storefront run build",
+    "lint": "npm --prefix storefront run lint",
+    "dev:storefront": "npm --prefix storefront run dev",
+    "build:storefront": "npm --prefix storefront run build",
+    "lint:storefront": "npm --prefix storefront run lint",
+    "dev:admin": "npm --prefix admin-panel run dev",
+    "build:admin": "npm --prefix admin-panel run build",
+    "lint:admin": "npm --prefix admin-panel run lint",
+    "dev:backend": "npm --prefix backend run start:dev",
+    "build:backend": "npm --prefix backend run build",
+    "lint:backend": "npm --prefix backend run lint",
+    "admin:dev": "npm --prefix admin-panel run dev",
+    "admin:build": "npm --prefix admin-panel run build",
+    "admin:lint": "npm --prefix admin-panel run lint",
+    "backend:dev": "npm --prefix backend run start:dev",
+    "backend:build": "npm --prefix backend run build",
+    "backend:lint": "npm --prefix backend run lint"
   }
 }
