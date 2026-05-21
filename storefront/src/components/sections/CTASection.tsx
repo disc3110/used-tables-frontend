@@ -10,7 +10,11 @@ export default function CTASection() {
             <div className="order-2 flex items-center px-7 py-10 md:order-1 md:px-12 md:py-14">
               <div className="max-w-xl">
                 <div className="mb-6 text-[#b27a2a]">
-                  <svg aria-hidden="true" viewBox="0 0 64 24" className="h-6 w-16">
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 64 24"
+                    className="h-6 w-16"
+                  >
                     <path
                       d="M2 20h60M10 20l8-10 7 7 9-12 8 9 6-6 6 12"
                       fill="none"
@@ -23,15 +27,15 @@ export default function CTASection() {
                 </div>
 
                 <p className="text-sm font-medium uppercase tracking-[0.26em] text-[#a46f24]">
-                  Sell Your Table
+                  Reclaim your game room
                 </p>
 
                 <h2 className="mt-4 text-5xl leading-[0.96] text-[#0d1b29] [font-family:Georgia,Times,'Times_New_Roman',serif] md:text-6xl">
-                  Looking to sell your pool table?
+                  Ready to get rid of your pool table?
                 </h2>
 
                 <p className="mt-5 max-w-lg text-lg leading-8 text-[#4b4e53]">
-                  We make it easy. Get a fair offer and fast, professional
+                  We make it easy. Get your room back with our professional
                   removal.
                 </p>
 

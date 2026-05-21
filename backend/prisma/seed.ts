@@ -8,21 +8,30 @@ const categorySeed = [
   {
     slug: "pool-tables",
     name: "Pool Tables",
-    description: "Premium used pool tables selected for craftsmanship and playability.",
+    description:
+      "Premium used pool tables selected for craftsmanship and playability.",
   },
   {
     slug: "ping-pong",
     name: "Ping Pong Tables",
-    description: "Reliable table tennis options for home game rooms and recreation spaces.",
+    description:
+      "Reliable table tennis options for home game rooms and recreation spaces.",
+  },
+  {
+    slug: "grill",
+    name: "Grills",
+    description:
+      "High-quality outdoor cooking options for your patio or backyard.",
   },
   {
     slug: "foosball",
     name: "Foosball Tables",
-    description: "Quality foosball tables for casual play and competitive matches.",
+    description:
+      "Quality foosball tables for casual play and competitive matches.",
   },
 ];
 
-const productSeed = [
+/*const productSeed = [
   {
     sku: "POOL-001",
     slug: "BERINGER-used-pool-table",
@@ -54,7 +63,8 @@ const productSeed = [
     name: "Restored Pool Table",
     categorySlug: "pool-tables",
     shortDescription: "Fully restored table blah blah.",
-    description: "This table has been professionally restored and includes new cloth and leveling.",
+    description:
+      "This table has been professionally restored and includes new cloth and leveling.",
     startingPrice: 2899,
     quantity: 1,
     condition: "restored",
@@ -103,7 +113,8 @@ const productSeed = [
     name: "Compact Ping Pong Table",
     categorySlug: "ping-pong",
     shortDescription: "Space-saving table for smaller rooms.",
-    description: "Perfect for apartments or smaller spaces while still offering a great playing experience.",
+    description:
+      "Perfect for apartments or smaller spaces while still offering a great playing experience.",
     startingPrice: 499,
     quantity: 1,
     condition: "good",
@@ -127,7 +138,8 @@ const productSeed = [
     name: "Tournament Foosball Table",
     categorySlug: "foosball",
     shortDescription: "Professional foosball table.",
-    description: "A sturdy foosball table built for competitive play with smooth rods and solid construction.",
+    description:
+      "A sturdy foosball table built for competitive play with smooth rods and solid construction.",
     startingPrice: 999,
     quantity: 1,
     condition: "excellent",
@@ -150,7 +162,8 @@ const productSeed = [
     name: "Casual Foosball Table",
     categorySlug: "foosball",
     shortDescription: "Great for casual play at home.",
-    description: "Affordable and fun foosball table, ideal for family and friends.",
+    description:
+      "Affordable and fun foosball table, ideal for family and friends.",
     startingPrice: 399,
     quantity: 1,
     condition: "good",
@@ -167,13 +180,15 @@ const productSeed = [
       },
     ],
   },
-];
+]; */
 
 async function main() {
-  const adminEmail = process.env.ADMIN_SEED_EMAIL?.toLowerCase() ?? "admin@usedbilliardstore.ca";
+  const adminEmail =
+    process.env.ADMIN_SEED_EMAIL?.toLowerCase() ?? "admin@usedbilliardstore.ca";
   const adminPassword = process.env.ADMIN_SEED_PASSWORD ?? "admin12345";
   const adminName = process.env.ADMIN_SEED_NAME ?? "Admin User";
-  const userEmail = process.env.USER_SEED_EMAIL?.toLowerCase() ?? "user@usedbilliardstore.ca";
+  const userEmail =
+    process.env.USER_SEED_EMAIL?.toLowerCase() ?? "user@usedbilliardstore.ca";
   const userPassword = process.env.USER_SEED_PASSWORD ?? "user12345";
   const userName = process.env.USER_SEED_NAME ?? "Store User";
 
@@ -191,7 +206,7 @@ async function main() {
     categoryBySlug.set(category.slug, createdCategory);
   }
 
-  for (const product of productSeed) {
+  /*for (const product of productSeed) {
     const category = categoryBySlug.get(product.categorySlug);
 
     if (!category) {
@@ -224,21 +239,15 @@ async function main() {
         },
       },
     });
-  }
+  } */
 
   await prisma.user.createMany({
     data: [
       {
-        fullName: adminName,
-        email: adminEmail,
-        passwordHash: hashPassword(adminPassword),
+        fullName: "Diego",
+        email: "diego@homebilliards.ca",
+        passwordHash: hashPassword("getmuz-5niwvi-Wyvsow"),
         role: "ADMIN",
-      },
-      {
-        fullName: userName,
-        email: userEmail,
-        passwordHash: hashPassword(userPassword),
-        role: "USER",
       },
     ],
   });

@@ -78,6 +78,15 @@ export type AdminContactInquiry = {
   createdAt: string;
 };
 
+export type AdminSellRequestImage = {
+  id: string;
+  url: string;
+  publicId: string;
+  width?: number | null;
+  height?: number | null;
+  originalFilename?: string | null;
+};
+
 export type AdminSellRequest = {
   id: string;
   fullName: string;
@@ -87,7 +96,53 @@ export type AdminSellRequest = {
   location?: string | null;
   message?: string | null;
   status: InquiryStatus;
+  images: AdminSellRequestImage[];
   createdAt: string;
+};
+
+export type AdminOrderStatus =
+  | "PENDING"
+  | "PAID"
+  | "FULFILLING"
+  | "SHIPPED"
+  | "CANCELLED"
+  | "REFUNDED";
+
+export type AdminPaymentStatus = "UNPAID" | "PAID" | "FAILED" | "REFUNDED";
+
+export type AdminOrderItem = {
+  id: string;
+  productId?: string | null;
+  productName: string;
+  sku: string;
+  quantity: number;
+  unitPriceCents: number;
+  totalCents: number;
+};
+
+export type AdminOrder = {
+  id: string;
+  orderNumber: string;
+  status: AdminOrderStatus;
+  paymentStatus: AdminPaymentStatus;
+  stripeSessionId?: string | null;
+  stripePaymentIntentId?: string | null;
+  customerEmail?: string | null;
+  customerPhone?: string | null;
+  customerName?: string | null;
+  shippingName?: string | null;
+  shippingLine1?: string | null;
+  shippingLine2?: string | null;
+  shippingCity?: string | null;
+  shippingProvince?: string | null;
+  shippingPostalCode?: string | null;
+  shippingCountry?: string | null;
+  subtotalCents: number;
+  totalCents: number;
+  currency: string;
+  paidAt?: string | null;
+  createdAt: string;
+  items: AdminOrderItem[];
 };
 
 export type AdminUser = {

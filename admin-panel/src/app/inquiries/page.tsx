@@ -11,6 +11,7 @@ import type {
   AdminContactInquiry,
   AdminProductInquiry,
   AdminSellRequest,
+  AdminSellRequestImage,
   InquiryStatus,
 } from "@/lib/types";
 
@@ -81,6 +82,45 @@ function buildSellRequestMailtoHref(inquiry: AdminSellRequest) {
   ];
 
   return `mailto:${encodeURIComponent(inquiry.email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join("\n"))}`;
+}
+
+function SellRequestImageGallery({ images }: { images: AdminSellRequestImage[] }) {
+  if (!images.length) {
+    return (
+      <p className="meta" style={{ marginTop: 14 }}>
+        No photos attached.
+      </p>
+    );
+  }
+
+  return (
+    <div style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}>
+      {images.map((image) => (
+        <a
+          key={image.id}
+          href={image.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={image.originalFilename ?? "View full image"}
+          style={{
+            display: "block",
+            borderRadius: 10,
+            overflow: "hidden",
+            border: "1px solid #e0d3c2",
+            flexShrink: 0,
+          }}
+        >
+          <img
+            src={image.url}
+            alt={image.originalFilename ?? "Sell request photo"}
+            width={96}
+            height={96}
+            style={{ width: 96, height: 96, objectFit: "cover", display: "block" }}
+          />
+        </a>
+      ))}
+    </div>
+  );
 }
 
 export default async function InquiriesPage({ searchParams }: InquiriesPageProps) {
@@ -210,6 +250,9 @@ export default async function InquiriesPage({ searchParams }: InquiriesPageProps
           ];
         }}
         renderBody={(item) => (item as AdminSellRequest).message}
+        renderExtra={(item) => (
+          <SellRequestImageGallery images={(item as AdminSellRequest).images} />
+        )}
         getReplyHref={(item) => buildSellRequestMailtoHref(item as AdminSellRequest)}
         replyLabel="Reply to Sell Lead"
       />

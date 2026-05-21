@@ -1,6 +1,5 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 const BACKEND_API_URL =
@@ -13,42 +12,32 @@ function getValue(formData: FormData, key: string) {
 
 export async function buyNowProduct(formData: FormData) {
   const productSlug = getValue(formData, "productSlug");
-  let redirectPath = "/checkout/success?status=error";
 
   if (!productSlug) {
-    redirect(redirectPath);
+    redirect("/products");
   }
+
+  let redirectUrl = `/checkout/success?status=error`;
 
   try {
-    const response = await fetch(
-      `${BACKEND_API_URL}/products/${encodeURIComponent(productSlug)}/buy-now`,
-      {
-        method: "POST",
-        cache: "no-store",
-      },
-    );
+    const response = await fetch(`${BACKEND_API_URL}/checkout/create-session`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      cache: "no-store",
+      body: JSON.stringify({ productSlug, quantity: 1 }),
+    });
 
     if (response.ok) {
-      revalidatePath("/");
-      revalidatePath("/products");
-      revalidatePath("/products/[slug]", "page");
-      redirectPath = `/checkout/success?status=success&product=${encodeURIComponent(
-        productSlug,
-      )}`;
-    } else if (response.status === 400) {
-      redirectPath = `/checkout/success?status=unavailable&product=${encodeURIComponent(
-        productSlug,
-      )}`;
+      const data = (await response.json()) as { url: string };
+      redirectUrl = data.url;
+    } else if (response.status === 400 || response.status === 404) {
+      redirectUrl = `/checkout/success?status=unavailable&product=${encodeURIComponent(productSlug)}`;
     } else {
-      redirectPath = `/checkout/success?status=error&product=${encodeURIComponent(
-        productSlug,
-      )}`;
+      redirectUrl = `/checkout/success?status=error&product=${encodeURIComponent(productSlug)}`;
     }
   } catch {
-    redirectPath = `/checkout/success?status=error&product=${encodeURIComponent(
-      productSlug,
-    )}`;
+    redirectUrl = `/checkout/success?status=error&product=${encodeURIComponent(productSlug)}`;
   }
 
-  redirect(redirectPath);
+  redirect(redirectUrl);
 }

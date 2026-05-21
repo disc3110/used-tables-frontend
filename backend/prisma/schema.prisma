@@ -94,15 +94,83 @@ model QuoteRequest {
 }
 
 model SellRequest {
-  id        String   @id @default(cuid())
+  id        String             @id @default(cuid())
   fullName  String
   email     String
   phone     String
   itemType  String?
   location  String?
   message   String?
-  status    String   @default("new")
-  createdAt DateTime @default(now())
+  status    String             @default("new")
+  images    SellRequestImage[]
+  createdAt DateTime           @default(now())
+}
+
+model SellRequestImage {
+  id               String      @id @default(cuid())
+  sellRequestId    String
+  sellRequest      SellRequest @relation(fields: [sellRequestId], references: [id], onDelete: Cascade)
+  url              String
+  publicId         String
+  width            Int?
+  height           Int?
+  originalFilename String?
+  createdAt        DateTime    @default(now())
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  FULFILLING
+  SHIPPED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  UNPAID
+  PAID
+  FAILED
+  REFUNDED
+}
+
+model Order {
+  id                    String        @id @default(cuid())
+  orderNumber           String        @unique
+  status                OrderStatus   @default(PENDING)
+  paymentStatus         PaymentStatus @default(UNPAID)
+  stripeSessionId       String?       @unique
+  stripePaymentIntentId String?
+  customerEmail         String?
+  customerPhone         String?
+  customerName          String?
+  shippingName          String?
+  shippingLine1         String?
+  shippingLine2         String?
+  shippingCity          String?
+  shippingProvince      String?
+  shippingPostalCode    String?
+  shippingCountry       String?
+  subtotalCents         Int
+  totalCents            Int
+  currency              String        @default("cad")
+  paidAt                DateTime?
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+  items                 OrderItem[]
+}
+
+model OrderItem {
+  id             String   @id @default(cuid())
+  orderId        String
+  order          Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId      String?
+  productName    String
+  sku            String
+  quantity       Int      @default(1)
+  unitPriceCents Int
+  totalCents     Int
+  createdAt      DateTime @default(now())
 }
 
 model Sale {

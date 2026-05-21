@@ -5,26 +5,28 @@ const menuLinks = [
   { label: "Pool Tables", href: "/products/pool-tables" },
   { label: "Ping Pong Tables", href: "/products/ping-pong" },
   { label: "Foosball Tables", href: "/products/foosball" },
-  { label: "Sell Your Table", href: "/contact" },
+  { label: "Get rid of Your Table", href: "/contact" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
 
 const serviceAreas = [
-  "Vancouver",
-  "West Vancouver",
-  "North Vancouver",
-  "Richmond",
-  "Burnaby",
-  "Coquitlam",
-  "Surrey",
+  "Vancouver - used pool tables Vancouver",
+  "West Vancouver - used pool tables West Vancouver",
+  "North Vancouver - used pool tables North Vancouver",
+  "Richmond - used pool tables Richmond",
+  "Burnaby - used pool tables Burnaby",
+  "Coquitlam - used pool tables Coquitlam",
+  "Surrey - used pool tables Surrey",
   "Langley & more",
 ];
 
 const contactLinks = [
   { label: "604-779-4196", href: "tel:6047794196" },
-  { label: "info@usedpooltables.ca", href: "mailto:info@usedpooltables.ca" },
-  { label: "@usedpooltables", href: "https://instagram.com/usedpooltables" },
+  {
+    label: "sales@usedpooltablesvancouver.com",
+    href: "mailto:sales@usedpooltablesvancouver.com",
+  },
 ];
 
 export default function Footer() {
@@ -39,8 +41,8 @@ export default function Footer() {
               Used Billiard Store
             </h2>
             <p className="mt-5 text-base leading-8 text-white/72">
-              Quality used pool tables, ping pong tables, and game room pieces
-              delivered across Metro Vancouver.
+              Quality used pool tables, ping pong tables, and grills delivered
+              across Metro Vancouver.
             </p>
           </div>
 
@@ -83,8 +85,14 @@ export default function Footer() {
                   <Link
                     href={link.href}
                     className="text-base text-white/78 transition hover:text-[#f1c269]"
-                    target={link.href.startsWith("https://") ? "_blank" : undefined}
-                    rel={link.href.startsWith("https://") ? "noreferrer" : undefined}
+                    target={
+                      link.href.startsWith("https://") ? "_blank" : undefined
+                    }
+                    rel={
+                      link.href.startsWith("https://")
+                        ? "noreferrer"
+                        : undefined
+                    }
                   >
                     {link.label}
                   </Link>

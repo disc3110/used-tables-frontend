@@ -1,4 +1,8 @@
-export type ProductCategory = "pool-tables" | "ping-pong" | "foosball";
+export type ProductCategory =
+  | "pool-tables"
+  | "ping-pong"
+  | "foosball"
+  | "grill";
 
 export type ProductDetailLayout =
   | "pool"

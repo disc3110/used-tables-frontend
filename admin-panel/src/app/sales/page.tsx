@@ -1,6 +1,8 @@
 import BackendUnavailableNotice from "@/components/admin/BackendUnavailableNotice";
 import { isBackendUnavailableError } from "@/lib/backend-error";
-import { getProtectedAdminSales } from "@/lib/server-api";
+import { getProtectedAdminOrders } from "@/lib/server-api";
+import type { AdminOrder, AdminPaymentStatus } from "@/lib/types";
+import Link from "next/link";
 
 type SalesRange = "day" | "week" | "month" | "all" | "custom";
 
@@ -9,6 +11,7 @@ interface SalesPageProps {
     range?: SalesRange;
     from?: string;
     to?: string;
+    order?: string;
   }>;
 }
 
@@ -19,46 +22,28 @@ const rangeFilters: { label: string; value: SalesRange }[] = [
   { label: "All", value: "all" },
 ];
 
-function formatMoney(value: number) {
+function formatMoney(cents: number) {
   return new Intl.NumberFormat("en-CA", {
     style: "currency",
     currency: "CAD",
     maximumFractionDigits: 0,
-  }).format(value);
+  }).format(cents / 100);
 }
 
 function toDateInputValue(date: Date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-
-  return `${year}-${month}-${day}`;
+  return date.toISOString().slice(0, 10);
 }
 
 function startOfDay(date: Date) {
-  const next = new Date(date);
-  next.setHours(0, 0, 0, 0);
-  return next;
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  return d;
 }
 
 function endOfDay(date: Date) {
-  const next = new Date(date);
-  next.setHours(23, 59, 59, 999);
-  return next;
-}
-
-function startOfRange(range: SalesRange, now: Date) {
-  const start = startOfDay(now);
-
-  if (range === "week") {
-    start.setDate(start.getDate() - 6);
-  }
-
-  if (range === "month") {
-    start.setDate(start.getDate() - 29);
-  }
-
-  return start;
+  const d = new Date(date);
+  d.setHours(23, 59, 59, 999);
+  return d;
 }
 
 function getSalesFilters(params: {
@@ -66,70 +51,77 @@ function getSalesFilters(params: {
   from?: string;
   to?: string;
 }) {
-  const validRange = rangeFilters.some((filter) => filter.value === params.range)
+  const validRange = rangeFilters.some((f) => f.value === params.range)
     ? params.range
     : undefined;
   const range = params.from || params.to ? "custom" : (validRange ?? "month");
   const now = new Date();
 
   if (range === "all") {
-    return {
-      activeRange: range,
-      fromInput: "",
-      toInput: "",
-      label: "All sales",
-    };
+    return { activeRange: range, fromInput: "", toInput: "", label: "All orders" };
   }
 
   if (range === "custom") {
     const fromInput = params.from ?? "";
     const toInput = params.to ?? "";
-
     return {
       activeRange: range,
       from: fromInput ? startOfDay(new Date(`${fromInput}T00:00:00`)).toISOString() : undefined,
       to: toInput ? endOfDay(new Date(`${toInput}T00:00:00`)).toISOString() : undefined,
       fromInput,
       toInput,
-      label:
-        fromInput || toInput
-          ? `${fromInput || "Start"} to ${toInput || "Today"}`
-          : "Custom range",
+      label: fromInput || toInput ? `${fromInput || "Start"} to ${toInput || "Today"}` : "Custom range",
     };
   }
 
-  const from = startOfRange(range, now);
-  const to = endOfDay(now);
+  const start = startOfDay(now);
+  if (range === "week") start.setDate(start.getDate() - 6);
+  if (range === "month") start.setDate(start.getDate() - 29);
+  const end = endOfDay(now);
 
   return {
     activeRange: range,
-    from: from.toISOString(),
-    to: to.toISOString(),
-    fromInput: toDateInputValue(from),
-    toInput: toDateInputValue(to),
-    label:
-      range === "day"
-        ? "Today"
-        : range === "week"
-          ? "Last 7 days"
-          : "Last 30 days",
+    from: start.toISOString(),
+    to: end.toISOString(),
+    fromInput: toDateInputValue(start),
+    toInput: toDateInputValue(end),
+    label: range === "day" ? "Today" : range === "week" ? "Last 7 days" : "Last 30 days",
   };
+}
+
+const paymentBadgeStyle: Record<AdminPaymentStatus, string> = {
+  PAID: "color: #2d7a2d",
+  UNPAID: "color: #a46f24",
+  FAILED: "color: #c0392b",
+  REFUNDED: "color: #555",
+};
+
+function shippingOneLiner(order: AdminOrder) {
+  return [
+    order.shippingLine1,
+    order.shippingCity,
+    order.shippingProvince,
+    order.shippingPostalCode,
+    order.shippingCountry,
+  ]
+    .filter(Boolean)
+    .join(", ");
 }
 
 export default async function SalesPage({ searchParams }: SalesPageProps) {
   const params = await searchParams;
   const filters = getSalesFilters(params);
-  let sales;
+  const expandedOrderId = params.order ?? null;
+
+  let ordersResult: { data: AdminOrder[] };
 
   try {
-    sales = await getProtectedAdminSales({
+    ordersResult = await getProtectedAdminOrders({
       from: filters.from,
       to: filters.to,
     });
   } catch (error) {
-    if (!isBackendUnavailableError(error)) {
-      throw error;
-    }
+    if (!isBackendUnavailableError(error)) throw error;
 
     return (
       <div className="admin-page">
@@ -141,11 +133,14 @@ export default async function SalesPage({ searchParams }: SalesPageProps) {
       </div>
     );
   }
-  const totalRevenue = sales.data.reduce(
-    (sum, sale) => sum + sale.unitPrice * sale.quantity,
+
+  const orders = ordersResult.data;
+  const paidOrders = orders.filter((o) => o.paymentStatus === "PAID");
+  const totalRevenueCents = paidOrders.reduce((sum, o) => sum + o.totalCents, 0);
+  const totalItems = paidOrders.reduce(
+    (sum, o) => sum + o.items.reduce((s, i) => s + i.quantity, 0),
     0,
   );
-  const totalItems = sales.data.reduce((sum, sale) => sum + sale.quantity, 0);
 
   return (
     <div className="admin-page">
@@ -154,10 +149,7 @@ export default async function SalesPage({ searchParams }: SalesPageProps) {
           <div>
             <p className="admin-eyebrow">Sales</p>
             <h1 className="admin-title">Online Sales</h1>
-            <p className="admin-subtitle">
-              Buy Now activity is tracked here. Stripe payments can later write
-              to the same sales history from webhook events.
-            </p>
+            <p className="admin-subtitle">Stripe checkout orders. Metrics count paid orders only.</p>
           </div>
         </div>
 
@@ -166,9 +158,7 @@ export default async function SalesPage({ searchParams }: SalesPageProps) {
             <a
               key={filter.value}
               href={`/sales?range=${filter.value}`}
-              className={`filter-link ${
-                filters.activeRange === filter.value ? "is-active" : ""
-              }`}
+              className={`filter-link ${filters.activeRange === filter.value ? "is-active" : ""}`}
             >
               {filter.label}
             </a>
@@ -193,8 +183,8 @@ export default async function SalesPage({ searchParams }: SalesPageProps) {
 
       <section className="admin-grid three">
         <article className="admin-card admin-card-pad">
-          <p className="metric-label">Sales</p>
-          <p className="metric-value">{sales.data.length}</p>
+          <p className="metric-label">Paid Orders</p>
+          <p className="metric-value">{paidOrders.length}</p>
         </article>
         <article className="admin-card admin-card-pad">
           <p className="metric-label">Items Sold</p>
@@ -202,54 +192,144 @@ export default async function SalesPage({ searchParams }: SalesPageProps) {
         </article>
         <article className="admin-card admin-card-pad">
           <p className="metric-label">Revenue</p>
-          <p className="metric-value">{formatMoney(totalRevenue)}</p>
+          <p className="metric-value">{formatMoney(totalRevenueCents)}</p>
         </article>
       </section>
 
       <section className="admin-card admin-card-pad">
         <p className="admin-eyebrow">History</p>
         <h2 className="admin-title" style={{ fontSize: "2.3rem" }}>
-          Recent Sales
+          Orders
         </h2>
-        <p className="meta" style={{ marginTop: 10 }}>
-          Showing {filters.label}
-        </p>
+        <p className="meta" style={{ marginTop: 10 }}>Showing {filters.label}</p>
 
         <div className="table-wrap" style={{ marginTop: 24 }}>
           <table className="admin-table">
             <thead>
               <tr>
+                <th>Order</th>
+                <th>Customer</th>
                 <th>Product</th>
-                <th>SKU</th>
-                <th>Price</th>
-                <th>Qty</th>
+                <th>Total</th>
+                <th>Payment</th>
                 <th>Status</th>
                 <th>Date</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
-              {sales.data.length === 0 ? (
+              {orders.length === 0 ? (
                 <tr>
-                  <td colSpan={6}>
-                    <p className="meta">No sales yet.</p>
+                  <td colSpan={8}>
+                    <p className="meta">No orders yet.</p>
                   </td>
                 </tr>
               ) : (
-                sales.data.map((sale) => (
-                  <tr key={sale.id}>
-                    <td>
-                      <strong>{sale.productName}</strong>
-                      <div className="meta">{sale.productSlug}</div>
-                    </td>
-                    <td>{sale.sku}</td>
-                    <td>{formatMoney(sale.unitPrice)}</td>
-                    <td>{sale.quantity}</td>
-                    <td>
-                      <span className="badge">{sale.status}</span>
-                    </td>
-                    <td>{new Date(sale.createdAt).toLocaleString()}</td>
-                  </tr>
-                ))
+                orders.map((order) => {
+                  const isExpanded = expandedOrderId === order.id;
+                  const firstItem = order.items[0];
+                  const shipping = shippingOneLiner(order);
+
+                  return (
+                    <>
+                      <tr key={order.id}>
+                        <td>
+                          <strong style={{ fontFamily: "monospace", fontSize: "0.85rem" }}>
+                            {order.orderNumber}
+                          </strong>
+                        </td>
+                        <td>
+                          <div>{order.customerName ?? "—"}</div>
+                          <div className="meta">{order.customerEmail ?? ""}</div>
+                        </td>
+                        <td>
+                          {firstItem ? (
+                            <>
+                              <strong>{firstItem.productName}</strong>
+                              <div className="meta">{firstItem.sku}</div>
+                            </>
+                          ) : "—"}
+                        </td>
+                        <td>{formatMoney(order.totalCents)}</td>
+                        <td>
+                          <span
+                            className="badge"
+                            style={{ ...(paymentBadgeStyle[order.paymentStatus] ? { color: paymentBadgeStyle[order.paymentStatus].replace("color: ", "") } : {}) }}
+                          >
+                            {order.paymentStatus}
+                          </span>
+                        </td>
+                        <td>
+                          <span className="badge">{order.status}</span>
+                        </td>
+                        <td>{new Date(order.createdAt).toLocaleDateString()}</td>
+                        <td>
+                          <Link
+                            href={`/sales?order=${isExpanded ? "" : order.id}&range=${filters.activeRange}`}
+                            className="button-secondary"
+                            style={{ fontSize: "0.75rem", padding: "4px 10px" }}
+                          >
+                            {isExpanded ? "Hide" : "Details"}
+                          </Link>
+                        </td>
+                      </tr>
+
+                      {isExpanded ? (
+                        <tr key={`${order.id}-detail`}>
+                          <td colSpan={8}>
+                            <div style={{ padding: "12px 4px 16px", display: "grid", gap: 8 }}>
+                              {order.customerPhone ? (
+                                <div className="meta">
+                                  <strong>Phone:</strong> {order.customerPhone}
+                                </div>
+                              ) : null}
+
+                              {shipping ? (
+                                <div className="meta">
+                                  <strong>Ship to:</strong>{" "}
+                                  {order.shippingName ? `${order.shippingName} — ` : ""}
+                                  {shipping}
+                                </div>
+                              ) : null}
+
+                              <div className="meta">
+                                <strong>Items:</strong>{" "}
+                                {order.items
+                                  .map((i) => `${i.productName} × ${i.quantity} (${formatMoney(i.unitPriceCents)} ea)`)
+                                  .join(", ")}
+                              </div>
+
+                              {order.stripeSessionId ? (
+                                <div className="meta">
+                                  <strong>Stripe session:</strong>{" "}
+                                  <span style={{ fontFamily: "monospace", fontSize: "0.8rem" }}>
+                                    {order.stripeSessionId}
+                                  </span>
+                                </div>
+                              ) : null}
+
+                              {order.stripePaymentIntentId ? (
+                                <div className="meta">
+                                  <strong>Payment intent:</strong>{" "}
+                                  <span style={{ fontFamily: "monospace", fontSize: "0.8rem" }}>
+                                    {order.stripePaymentIntentId}
+                                  </span>
+                                </div>
+                              ) : null}
+
+                              {order.paidAt ? (
+                                <div className="meta">
+                                  <strong>Paid at:</strong>{" "}
+                                  {new Date(order.paidAt).toLocaleString()}
+                                </div>
+                              ) : null}
+                            </div>
+                          </td>
+                        </tr>
+                      ) : null}
+                    </>
+                  );
+                })
               )}
             </tbody>
           </table>
