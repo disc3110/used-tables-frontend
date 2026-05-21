@@ -101,6 +101,8 @@ function getCategoryDetailLayout(category: ProductCategory): ProductDetailLayout
       return "ping-pong";
     case "foosball":
       return "foosball";
+    case "grill":
+      return "smoker";
   }
 }
 

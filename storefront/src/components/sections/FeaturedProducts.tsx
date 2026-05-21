@@ -12,6 +12,8 @@ export default function FeaturedProductsSection({
 }: FeaturedProductsSectionProps) {
   const featuredProducts = products.filter((product) => product.featured);
 
+  if (!featuredProducts.length) return null;
+
   return (
     <section
       id="featured-products"

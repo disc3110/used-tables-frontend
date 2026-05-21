@@ -118,11 +118,11 @@ export default function HeroSection() {
         >
           <div className="mx-auto flex max-w-5xl flex-col items-center text-center">
             <div className="flex flex-col items-center text-white">
-              <span className="block text-[3.4rem] font-semibold leading-none tracking-[0.26em] uppercase [text-shadow:0_10px_30px_rgba(0,0,0,0.3),0_0_18px_rgba(255,255,255,0.12)] md:text-[6.4rem]">
-                Used
+              <span className="block text-[2.4rem] font-semibold leading-none tracking-[0.26em] uppercase [text-shadow:0_10px_30px_rgba(0,0,0,0.3),0_0_18px_rgba(255,255,255,0.12)] md:text-[4.4rem]">
+                Used Pool Tables
               </span>
               <span className="mt-3 block text-[1.05rem] font-light leading-none tracking-[0.56em] uppercase [text-shadow:0_8px_22px_rgba(0,0,0,0.28)] md:mt-4 md:text-[2rem]">
-                Billiards
+                Vancouver
               </span>
               <div className="mt-5 h-px w-28 bg-white/40 md:w-40" />
             </div>
@@ -143,6 +143,16 @@ export default function HeroSection() {
                 className="group inline-flex min-w-[220px] items-center justify-center gap-3 rounded-full border border-white/35 bg-white/8 px-6 py-3.5 text-[0.72rem] font-medium tracking-[0.32em] text-white shadow-[0_14px_32px_rgba(0,0,0,0.12)] backdrop-blur-md transition duration-300 hover:border-white/60 hover:bg-white/14 hover:shadow-[0_18px_40px_rgba(0,0,0,0.18)]"
               >
                 <span>PING PONG TABLES</span>
+                <span className="text-base leading-none transition duration-300 group-hover:translate-x-1">
+                  &rarr;
+                </span>
+              </Link>
+
+              <Link
+                href="/products/grill"
+                className="group inline-flex min-w-[220px] items-center justify-center gap-3 rounded-full border border-white/35 bg-white/8 px-6 py-3.5 text-[0.72rem] font-medium tracking-[0.32em] text-white shadow-[0_14px_32px_rgba(0,0,0,0.12)] backdrop-blur-md transition duration-300 hover:border-white/60 hover:bg-white/14 hover:shadow-[0_18px_40px_rgba(0,0,0,0.18)]"
+              >
+                <span>GRILLS</span>
                 <span className="text-base leading-none transition duration-300 group-hover:translate-x-1">
                   &rarr;
                 </span>
@@ -174,7 +184,7 @@ export default function HeroSection() {
                   transform:
                     ballMode === "mobilePortrait"
                       ? `translate(${-easedProgress * 44}px, ${easedProgress * 36}px)`
-                      : `translate(${-easedProgress * 440}px, ${-easedProgress * 78}px) scale(${desktopBallScale})`,
+                      : `translate(${-easedProgress * 480}px, ${-easedProgress * 58}px) scale(${desktopBallScale})`,
                   opacity:
                     ballMode === "mobilePortrait"
                       ? 0.9 * mobilePortraitBallFade
@@ -193,7 +203,7 @@ export default function HeroSection() {
                   transform:
                     ballMode === "mobilePortrait"
                       ? `translate(${easedProgress * 52}px, ${easedProgress * 40}px)`
-                      : `translate(${easedProgress * 405}px, ${-easedProgress * 90}px) scale(${desktopBallScale})`,
+                      : `translate(${easedProgress * 405}px, ${-easedProgress * 60}px) scale(${desktopBallScale})`,
                   opacity:
                     ballMode === "mobilePortrait"
                       ? 0.88 * mobilePortraitBallFade

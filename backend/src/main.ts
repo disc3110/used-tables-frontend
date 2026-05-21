@@ -9,6 +9,7 @@ import { PrismaService } from "./prisma/prisma.service";
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: false,
+    rawBody: true,
   });
 
   const configService = app.get(ConfigService);

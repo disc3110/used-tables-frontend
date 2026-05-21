@@ -8,7 +8,7 @@ export default function Navbar() {
           href="/"
           className="max-w-[10.5rem] text-balance text-lg leading-tight text-[#f7efe3] [font-family:Georgia,Times,'Times_New_Roman',serif] sm:max-w-none md:text-[2rem]"
         >
-          Used Billiard Store
+          Used Pool Tables Vancouver
         </Link>
 
         <div className="hidden items-center justify-center gap-10 text-[0.98rem] text-white/88 md:flex">
@@ -29,7 +29,7 @@ export default function Navbar() {
           href="/contact"
           className="inline-flex items-center justify-center gap-2 rounded-full bg-[#f1c269] px-4 py-2.5 text-sm font-medium text-[#18212d] shadow-[0_10px_24px_rgba(0,0,0,0.18)] transition hover:bg-[#f6cf84] md:px-6"
         >
-          <span>Request Quote</span>
+          <span>Get rid of your table</span>
           <span aria-hidden="true" className="text-base leading-none">
             &rarr;
           </span>

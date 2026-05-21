@@ -1,3 +1,4 @@
+import type React from "react";
 import type {
   AdminContactInquiry,
   AdminProductInquiry,
@@ -17,6 +18,7 @@ interface InquiryListProps {
   items: Inquiry[];
   renderMeta: (item: Inquiry) => string[];
   renderBody: (item: Inquiry) => string | undefined | null;
+  renderExtra?: (item: Inquiry) => React.ReactNode;
   getReplyHref?: (item: Inquiry) => string;
   replyLabel?: string;
   inquiryType: InquiryType;
@@ -28,6 +30,7 @@ export default function InquiryList({
   items,
   renderMeta,
   renderBody,
+  renderExtra,
   getReplyHref,
   replyLabel = "Reply by Email",
   inquiryType,
@@ -56,6 +59,7 @@ export default function InquiryList({
               {renderBody(item) ? (
                 <p style={{ marginTop: 14, lineHeight: 1.8 }}>{renderBody(item)}</p>
               ) : null}
+              {renderExtra ? renderExtra(item) : null}
               {getReplyHref ? (
                 <div className="admin-actions" style={{ marginTop: 18 }}>
                   <a

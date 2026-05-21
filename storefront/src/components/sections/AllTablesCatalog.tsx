@@ -28,10 +28,9 @@ type FilterGroup = {
 
 const categoryCards = [
   {
-    title: "All Tables",
+    title: "All Products",
     href: "/products",
     description: "View all",
-    active: true,
     icon: (
       <svg aria-hidden="true" viewBox="0 0 24 24" className="h-7 w-7">
         <path
@@ -48,7 +47,6 @@ const categoryCards = [
     title: "Pool Tables",
     href: "/products/pool-tables",
     description: "View all",
-    active: false,
     icon: (
       <svg aria-hidden="true" viewBox="0 0 24 24" className="h-7 w-7">
         <path
@@ -66,7 +64,6 @@ const categoryCards = [
     title: "Ping Pong Tables",
     href: "/products/ping-pong",
     description: "View all",
-    active: false,
     icon: (
       <svg aria-hidden="true" viewBox="0 0 24 24" className="h-7 w-7">
         <path
@@ -84,7 +81,6 @@ const categoryCards = [
     title: "Foosball Tables",
     href: "/products/foosball",
     description: "View all",
-    active: false,
     icon: (
       <svg aria-hidden="true" viewBox="0 0 24 24" className="h-7 w-7">
         <path
@@ -92,6 +88,23 @@ const categoryCards = [
           fill="none"
           stroke="currentColor"
           strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+  },
+  {
+    title: "Grills",
+    href: "/products/grill",
+    description: "View all",
+    icon: (
+      <svg aria-hidden="true" viewBox="0 0 24 24" className="h-7 w-7">
+        <path
+          d="M12 2c0 0-4 3-4 7a4 4 0 008 0c0-4-4-7-4-7zM8 17h8M9 20h6M12 13v4"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.7"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -108,6 +121,7 @@ const baseFilters: FilterGroup[] = [
       { label: "Pool Tables", value: "pool-tables" },
       { label: "Ping Pong Tables", value: "ping-pong" },
       { label: "Foosball Tables", value: "foosball" },
+      { label: "Grills", value: "grill" },
     ],
   },
   {
@@ -143,7 +157,7 @@ const baseFilters: FilterGroup[] = [
   },
 ];
 
-const trustHighlights = ["Quality Inspected", "Delivery & Setup", "Great Value"];
+const trustHighlights = ["Quality Inspected", "Proffessional Support"];
 const bottomTrust = ["5-Star Service", "Local Delivery", "Expert Support"];
 
 function normalize(value: string) {
@@ -197,7 +211,11 @@ function ProductList({ products }: { products: Product[] }) {
         const primaryImage = product.images[0];
 
         return (
-          <Link key={product.id} href={`/products/${product.slug}`} className="block">
+          <Link
+            key={product.id}
+            href={`/products/${product.slug}`}
+            className="block"
+          >
             <article className="grid gap-5 overflow-hidden rounded-[1.6rem] border border-[#e6dbc9] bg-[#fffdfa] p-4 shadow-[0_18px_40px_rgba(47,35,22,0.08)] transition hover:-translate-y-1 hover:shadow-[0_24px_48px_rgba(47,35,22,0.12)] md:grid-cols-[220px_minmax(0,1fr)]">
               <div className="relative aspect-[4/3] overflow-hidden rounded-[1.25rem] bg-[#f1eadf]">
                 {primaryImage ? (
@@ -305,11 +323,7 @@ export default function AllTablesCatalog({ products }: AllTablesCatalogProps) {
         selectedBrands.includes(normalize(product.brand ?? ""));
 
       return (
-        categoryMatch &&
-        priceMatch &&
-        conditionMatch &&
-        sizeMatch &&
-        brandMatch
+        categoryMatch && priceMatch && conditionMatch && sizeMatch && brandMatch
       );
     });
 
@@ -364,12 +378,12 @@ export default function AllTablesCatalog({ products }: AllTablesCatalogProps) {
                 </div>
 
                 <h1 className="text-5xl leading-[0.94] text-[#0d1b29] [font-family:Georgia,Times,'Times_New_Roman',serif] md:text-6xl">
-                  All Tables
+                  All Products
                 </h1>
 
                 <p className="mt-5 max-w-lg text-lg leading-8 text-[#4b4e53]">
-                  Browse our selection of pool tables, ping pong tables, and
-                  foosball tables.
+                  Browse our selection of pool tables, ping pong tables,
+                  foosball tables, and grills.
                 </p>
 
                 <div className="mt-8 flex flex-wrap gap-3">
@@ -401,57 +415,53 @@ export default function AllTablesCatalog({ products }: AllTablesCatalogProps) {
           </div>
         </section>
 
-        <section className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        <section className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {categoryCards.map((card) => {
             const categoryValue =
-              card.href === "/products/pool-tables"
-                ? "pool-tables"
-                : card.href === "/products/ping-pong"
-                  ? "ping-pong"
-                  : card.href === "/products/foosball"
-                    ? "foosball"
-                    : null;
+              card.href !== "/products"
+                ? card.href.replace("/products/", "")
+                : null;
             const isActive = categoryValue
               ? activeCategorySet.has(categoryValue)
               : selectedCategories.length === 0;
 
             return (
-            <Link
-              key={card.title}
-              href={
-                categoryValue
-                  ? `/products?category=${categoryValue}`
-                  : "/products"
-              }
-              className="group block"
-            >
-              <article
-                className={`rounded-[1.6rem] border p-6 shadow-[0_18px_40px_rgba(47,35,22,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_rgba(47,35,22,0.12)] ${
-                  isActive
-                    ? "border-[#d8b174] bg-[#fff7e9]"
-                    : "border-[#e6dbc9] bg-[#fffdfa]"
-                }`}
+              <Link
+                key={card.title}
+                href={
+                  categoryValue
+                    ? `/products?category=${categoryValue}`
+                    : "/products"
+                }
+                className="group block"
               >
-                <div
-                  className={`mb-5 inline-flex h-14 w-14 items-center justify-center rounded-full ${
+                <article
+                  className={`rounded-[1.6rem] border p-6 shadow-[0_18px_40px_rgba(47,35,22,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_rgba(47,35,22,0.12)] ${
                     isActive
-                      ? "bg-[#102131] text-[#f1c269]"
-                      : "bg-[#fbf6ee] text-[#a46f24]"
+                      ? "border-[#d8b174] bg-[#fff7e9]"
+                      : "border-[#e6dbc9] bg-[#fffdfa]"
                   }`}
                 >
-                  {card.icon}
-                </div>
-                <h2 className="text-[1.9rem] leading-[1.02] text-[#0f2030] [font-family:Georgia,Times,'Times_New_Roman',serif]">
-                  {card.title}
-                </h2>
-                <p className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-[#9b6c28] transition group-hover:text-[#7b5218]">
-                  <span>{card.description}</span>
-                  <span aria-hidden="true" className="text-base leading-none">
-                    &rarr;
-                  </span>
-                </p>
-              </article>
-            </Link>
+                  <div
+                    className={`mb-5 inline-flex h-14 w-14 items-center justify-center rounded-full ${
+                      isActive
+                        ? "bg-[#102131] text-[#f1c269]"
+                        : "bg-[#fbf6ee] text-[#a46f24]"
+                    }`}
+                  >
+                    {card.icon}
+                  </div>
+                  <h2 className="text-[1.9rem] leading-[1.02] text-[#0f2030] [font-family:Georgia,Times,'Times_New_Roman',serif]">
+                    {card.title}
+                  </h2>
+                  <p className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-[#9b6c28] transition group-hover:text-[#7b5218]">
+                    <span>{card.description}</span>
+                    <span aria-hidden="true" className="text-base leading-none">
+                      &rarr;
+                    </span>
+                  </p>
+                </article>
+              </Link>
             );
           })}
         </section>
@@ -473,7 +483,10 @@ export default function AllTablesCatalog({ products }: AllTablesCatalogProps) {
 
               <div className="space-y-6">
                 {filters.map((group) => (
-                  <div key={group.title} className="border-t border-[#efe5d7] pt-5 first:border-t-0 first:pt-0">
+                  <div
+                    key={group.title}
+                    className="border-t border-[#efe5d7] pt-5 first:border-t-0 first:pt-0"
+                  >
                     <h3 className="text-sm font-medium uppercase tracking-[0.22em] text-[#8c6120]">
                       {group.title}
                     </h3>
@@ -576,7 +589,6 @@ export default function AllTablesCatalog({ products }: AllTablesCatalogProps) {
                 </p>
               </div>
             )}
-
           </div>
         </section>
 
@@ -586,14 +598,14 @@ export default function AllTablesCatalog({ products }: AllTablesCatalogProps) {
               <div className="order-2 flex items-center px-7 py-10 md:order-1 md:px-12 md:py-14">
                 <div className="max-w-xl">
                   <p className="text-sm font-medium uppercase tracking-[0.26em] text-[#a46f24]">
-                    Sell Your Table
+                    RECLAIM YOUR GAME ROOM
                   </p>
                   <h2 className="mt-4 text-5xl leading-[0.96] text-[#0d1b29] [font-family:Georgia,Times,'Times_New_Roman',serif] md:text-6xl">
-                    Looking to sell your pool table?
+                    Ready to get rid of your pool table?
                   </h2>
 
                   <p className="mt-5 max-w-lg text-lg leading-8 text-[#4b4e53]">
-                    We make it easy. Get a fair offer and fast, professional
+                    We make it easy. Get your room back with our professional
                     removal.
                   </p>
 
@@ -602,8 +614,11 @@ export default function AllTablesCatalog({ products }: AllTablesCatalogProps) {
                       href="/contact"
                       className="inline-flex items-center justify-center gap-3 rounded-full bg-[#f1c269] px-6 py-3.5 text-sm font-medium text-[#18212d] shadow-[0_10px_24px_rgba(0,0,0,0.12)] transition hover:bg-[#f5ce82]"
                     >
-                      <span>Get a Quote</span>
-                      <span aria-hidden="true" className="text-base leading-none">
+                      <span>Get rid of your table</span>
+                      <span
+                        aria-hidden="true"
+                        className="text-base leading-none"
+                      >
                         &rarr;
                       </span>
                     </Link>

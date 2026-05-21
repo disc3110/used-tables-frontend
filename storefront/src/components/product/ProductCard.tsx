@@ -11,6 +11,7 @@ const categoryLabelMap: Record<Product["category"], string> = {
   "pool-tables": "Billiard",
   "ping-pong": "Ping Pong",
   foosball: "Foosball",
+  grill: "Grill",
 };
 
 export default function ProductCard({

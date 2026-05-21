@@ -32,8 +32,25 @@ export class InquiriesService {
   }
 
   async createSellRequest(payload: CreateSellRequestDto) {
+    const { images, ...sellRequestData } = payload;
+
     const inquiry = await this.prisma.sellRequest.create({
-      data: payload,
+      data: {
+        ...sellRequestData,
+        ...(images?.length
+          ? {
+              images: {
+                create: images.map((image) => ({
+                  url: image.url,
+                  publicId: image.publicId,
+                  width: image.width,
+                  height: image.height,
+                  originalFilename: image.originalFilename,
+                })),
+              },
+            }
+          : {}),
+      },
     });
 
     return {
@@ -69,6 +86,11 @@ export class InquiriesService {
       where: status ? { status } : undefined,
       orderBy: {
         createdAt: "desc",
+      },
+      include: {
+        images: {
+          orderBy: { createdAt: "asc" },
+        },
       },
     });
 

@@ -21,7 +21,7 @@ function getCheckboxValue(formData: FormData, key: string) {
   return formData.get(key) === "on";
 }
 
-async function postInquiry(path: string, payload: Record<string, string | boolean>) {
+async function postInquiry(path: string, payload: Record<string, unknown>) {
   const response = await fetch(`${BACKEND_API_URL}${path}`, {
     method: "POST",
     headers: {
@@ -93,6 +93,7 @@ export async function submitSellRequest(
   const itemType = getValue(formData, "itemType");
   const location = getValue(formData, "location");
   const message = getValue(formData, "message");
+  const imagesJson = getValue(formData, "imagesJson");
 
   if (!fullName || !email || !phone) {
     return {
@@ -108,6 +109,20 @@ export async function submitSellRequest(
     };
   }
 
+  let images: unknown[] | undefined;
+
+  if (imagesJson) {
+    try {
+      const parsed: unknown = JSON.parse(imagesJson);
+
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        images = parsed.slice(0, 3);
+      }
+    } catch {
+      // malformed JSON — proceed without images
+    }
+  }
+
   try {
     await postInquiry("/inquiries/sell-requests", {
       fullName,
@@ -116,6 +131,7 @@ export async function submitSellRequest(
       itemType,
       location,
       message,
+      ...(images ? { images } : {}),
     });
 
     return {
