@@ -56,7 +56,7 @@ async function uploadToCloudinary(file: File): Promise<UploadedImageMeta> {
     throw new Error(`Upload failed: ${response.status}`);
   }
 
-  const data = await response.json() as {
+  const data = (await response.json()) as {
     secure_url: string;
     public_id: string;
     width?: number;
@@ -83,8 +83,12 @@ export default function SellRequestForm({ itemType }: SellRequestFormProps) {
   const [selectedImages, setSelectedImages] = useState<LocalImagePreview[]>([]);
   const [uploadError, setUploadError] = useState<string | null>(null);
 
-  const isUploading = selectedImages.some((img) => img.uploadStatus === "uploading");
-  const hasUploadErrors = selectedImages.some((img) => img.uploadStatus === "error");
+  const isUploading = selectedImages.some(
+    (img) => img.uploadStatus === "uploading",
+  );
+  const hasUploadErrors = selectedImages.some(
+    (img) => img.uploadStatus === "error",
+  );
   const isSubmitDisabled = pending || isUploading;
 
   const handleImageSelection = (event: ChangeEvent<HTMLInputElement>) => {
@@ -149,7 +153,9 @@ export default function SellRequestForm({ itemType }: SellRequestFormProps) {
 
     setUploadError(null);
 
-    const idleImages = selectedImages.filter((img) => img.uploadStatus === "idle");
+    const idleImages = selectedImages.filter(
+      (img) => img.uploadStatus === "idle",
+    );
 
     // Track new upload results locally to avoid stale-closure issues when building imagesJson
     const newResults = new Map<string, UploadedImageMeta>();
@@ -165,7 +171,10 @@ export default function SellRequestForm({ itemType }: SellRequestFormProps) {
 
       const outcomes = await Promise.allSettled(
         idleImages.map((img) =>
-          uploadToCloudinary(img.file).then((result) => ({ id: img.id, result })),
+          uploadToCloudinary(img.file).then((result) => ({
+            id: img.id,
+            result,
+          })),
         ),
       );
 
@@ -184,13 +193,16 @@ export default function SellRequestForm({ itemType }: SellRequestFormProps) {
           const idleMatch = idleImages.find((idle) => idle.id === img.id);
           if (!idleMatch) return img;
           const result = newResults.get(img.id);
-          if (result) return { ...img, uploadStatus: "uploaded" as const, result };
+          if (result)
+            return { ...img, uploadStatus: "uploaded" as const, result };
           return { ...img, uploadStatus: "error" as const };
         }),
       );
 
       if (hasErrors) {
-        setUploadError("Some photos failed to upload. Remove them and try again.");
+        setUploadError(
+          "Some photos failed to upload. Remove them and try again.",
+        );
         return;
       }
     }
@@ -229,7 +241,7 @@ export default function SellRequestForm({ itemType }: SellRequestFormProps) {
     ? "Uploading photos…"
     : pending
       ? "Sending…"
-      : "Get a Quote";
+      : "Submit";
 
   return (
     <form ref={formRef} onSubmit={handleSubmit} className="mt-8 space-y-4">
