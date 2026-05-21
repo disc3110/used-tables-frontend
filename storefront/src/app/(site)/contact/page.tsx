@@ -7,7 +7,7 @@ import ContactInquiryForm from "@/components/forms/ContactInquiryForm";
 const infoCards = [
   {
     title: "Location",
-    body: ["Vancouver, British Columbia, Canada"],
+    body: ["1644 Marine Drive SE, Vancouver, British Columbia, Canada"],
     icon: (
       <svg aria-hidden="true" viewBox="0 0 24 24" className="h-7 w-7">
         <path
@@ -18,7 +18,14 @@ const infoCards = [
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        <circle cx="12" cy="10" r="2.5" fill="none" stroke="currentColor" strokeWidth="1.7" />
+        <circle
+          cx="12"
+          cy="10"
+          r="2.5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.7"
+        />
       </svg>
     ),
   },
@@ -47,7 +54,14 @@ const infoCards = [
     ],
     icon: (
       <svg aria-hidden="true" viewBox="0 0 24 24" className="h-7 w-7">
-        <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="1.7" />
+        <circle
+          cx="12"
+          cy="12"
+          r="8"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.7"
+        />
         <path
           d="M12 8v4l3 2"
           fill="none"
@@ -61,7 +75,11 @@ const infoCards = [
   },
 ];
 
-const trustHighlights = ["Local Delivery", "Professional Installation", "Quality Guaranteed"];
+const trustHighlights = [
+  "Local Delivery",
+  "Professional Installation",
+  "Quality Guaranteed",
+];
 
 export default function ContactPage() {
   return (
@@ -173,7 +191,10 @@ export default function ContactPage() {
 
               <div className="mt-6 space-y-3">
                 {trustHighlights.map((item) => (
-                  <div key={item} className="flex items-center gap-3 text-[#122233]">
+                  <div
+                    key={item}
+                    className="flex items-center gap-3 text-[#122233]"
+                  >
                     <span className="h-2.5 w-2.5 rounded-full bg-[#c89f57]" />
                     <span className="text-sm font-medium uppercase tracking-[0.2em]">
                       {item}
