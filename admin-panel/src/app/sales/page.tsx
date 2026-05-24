@@ -136,6 +136,7 @@ export default async function SalesPage({ searchParams }: SalesPageProps) {
 
   const orders = ordersResult.data;
   const paidOrders = orders.filter((o) => o.paymentStatus === "PAID");
+  const abandonedOrders = orders.filter((o) => o.paymentStatus !== "PAID");
   const totalRevenueCents = paidOrders.reduce((sum, o) => sum + o.totalCents, 0);
   const totalItems = paidOrders.reduce(
     (sum, o) => sum + o.items.reduce((s, i) => s + i.quantity, 0),
@@ -196,12 +197,13 @@ export default async function SalesPage({ searchParams }: SalesPageProps) {
         </article>
       </section>
 
+      {/* ── Completed orders ── */}
       <section className="admin-card admin-card-pad">
         <p className="admin-eyebrow">History</p>
         <h2 className="admin-title" style={{ fontSize: "2.3rem" }}>
-          Orders
+          Completed Orders
         </h2>
-        <p className="meta" style={{ marginTop: 10 }}>Showing {filters.label}</p>
+        <p className="meta" style={{ marginTop: 10 }}>Showing {filters.label} — paid orders only</p>
 
         <div className="table-wrap" style={{ marginTop: 24 }}>
           <table className="admin-table">
@@ -211,24 +213,23 @@ export default async function SalesPage({ searchParams }: SalesPageProps) {
                 <th>Customer</th>
                 <th>Product</th>
                 <th>Total</th>
-                <th>Payment</th>
                 <th>Status</th>
                 <th>Date</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              {orders.length === 0 ? (
+              {paidOrders.length === 0 ? (
                 <tr>
-                  <td colSpan={8}>
-                    <p className="meta">No orders yet.</p>
+                  <td colSpan={7}>
+                    <p className="meta">No completed orders in this period.</p>
                   </td>
                 </tr>
               ) : (
-                orders.map((order) => {
+                paidOrders.map((order) => {
                   const isExpanded = expandedOrderId === order.id;
                   const firstItem = order.items[0];
-                  const shipping = shippingOneLiner(order);
+                  const billing = shippingOneLiner(order);
 
                   return (
                     <>
@@ -252,14 +253,6 @@ export default async function SalesPage({ searchParams }: SalesPageProps) {
                         </td>
                         <td>{formatMoney(order.totalCents)}</td>
                         <td>
-                          <span
-                            className="badge"
-                            style={{ ...(paymentBadgeStyle[order.paymentStatus] ? { color: paymentBadgeStyle[order.paymentStatus].replace("color: ", "") } : {}) }}
-                          >
-                            {order.paymentStatus}
-                          </span>
-                        </td>
-                        <td>
                           <span className="badge">{order.status}</span>
                         </td>
                         <td>{new Date(order.createdAt).toLocaleDateString()}</td>
@@ -276,7 +269,7 @@ export default async function SalesPage({ searchParams }: SalesPageProps) {
 
                       {isExpanded ? (
                         <tr key={`${order.id}-detail`}>
-                          <td colSpan={8}>
+                          <td colSpan={7}>
                             <div style={{ padding: "12px 4px 16px", display: "grid", gap: 8 }}>
                               {order.customerPhone ? (
                                 <div className="meta">
@@ -284,11 +277,11 @@ export default async function SalesPage({ searchParams }: SalesPageProps) {
                                 </div>
                               ) : null}
 
-                              {shipping ? (
+                              {billing ? (
                                 <div className="meta">
-                                  <strong>Ship to:</strong>{" "}
+                                  <strong>Billing address:</strong>{" "}
                                   {order.shippingName ? `${order.shippingName} — ` : ""}
-                                  {shipping}
+                                  {billing}
                                 </div>
                               ) : null}
 
@@ -335,6 +328,69 @@ export default async function SalesPage({ searchParams }: SalesPageProps) {
           </table>
         </div>
       </section>
+
+      {/* ── Abandoned / incomplete attempts ── */}
+      {abandonedOrders.length > 0 && (
+        <section className="admin-card admin-card-pad">
+          <p className="admin-eyebrow" style={{ color: "#a0a0a0" }}>Incomplete</p>
+          <h2 className="admin-title" style={{ fontSize: "2.3rem", color: "#888" }}>
+            Abandoned Attempts
+          </h2>
+          <p className="meta" style={{ marginTop: 10 }}>
+            {abandonedOrders.length} session{abandonedOrders.length !== 1 ? "s" : ""} started but not completed in this period.
+          </p>
+
+          <div className="table-wrap" style={{ marginTop: 24 }}>
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Product</th>
+                  <th>Amount</th>
+                  <th>Payment</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {abandonedOrders.map((order) => {
+                  const firstItem = order.items[0];
+                  return (
+                    <tr key={order.id}>
+                      <td>
+                        <strong style={{ fontFamily: "monospace", fontSize: "0.85rem", color: "#aaa" }}>
+                          {order.orderNumber}
+                        </strong>
+                      </td>
+                      <td>
+                        {firstItem ? (
+                          <>
+                            <span style={{ color: "#888" }}>{firstItem.productName}</span>
+                            <div className="meta">{firstItem.sku}</div>
+                          </>
+                        ) : "—"}
+                      </td>
+                      <td style={{ color: "#aaa" }}>{formatMoney(order.totalCents)}</td>
+                      <td>
+                        <span
+                          className="badge"
+                          style={{ ...(paymentBadgeStyle[order.paymentStatus] ? { color: paymentBadgeStyle[order.paymentStatus].replace("color: ", "") } : {}) }}
+                        >
+                          {order.paymentStatus}
+                        </span>
+                      </td>
+                      <td>
+                        <span className="badge">{order.status}</span>
+                      </td>
+                      <td style={{ color: "#aaa" }}>{new Date(order.createdAt).toLocaleDateString()}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

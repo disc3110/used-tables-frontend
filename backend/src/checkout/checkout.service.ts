@@ -97,9 +97,7 @@ export class CheckoutService {
       success_url: `${storefrontUrl}/order-confirmation?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${storefrontUrl}/products/${product.slug}`,
       phone_number_collection: { enabled: true },
-      shipping_address_collection: {
-        allowed_countries: ["CA", "US"],
-      },
+      billing_address_collection: "required",
       metadata: {
         orderId: order.id,
         orderNumber: order.orderNumber,
@@ -181,7 +179,8 @@ export class CheckoutService {
     if (order.paymentStatus === "PAID") return; // idempotency guard
 
     const customer = session.customer_details;
-    const shipping = session.collected_information?.shipping_details ?? null;
+    // Billing address is on customer_details.address when billing_address_collection is enabled
+    const billing = customer?.address ?? null;
     const paymentIntentId =
       typeof session.payment_intent === "string"
         ? session.payment_intent
@@ -197,13 +196,13 @@ export class CheckoutService {
           customerEmail: customer?.email ?? null,
           customerPhone: customer?.phone ?? null,
           customerName: customer?.name ?? null,
-          shippingName: shipping?.name ?? null,
-          shippingLine1: shipping?.address?.line1 ?? null,
-          shippingLine2: shipping?.address?.line2 ?? null,
-          shippingCity: shipping?.address?.city ?? null,
-          shippingProvince: shipping?.address?.state ?? null,
-          shippingPostalCode: shipping?.address?.postal_code ?? null,
-          shippingCountry: shipping?.address?.country ?? null,
+          shippingName: customer?.name ?? null,
+          shippingLine1: billing?.line1 ?? null,
+          shippingLine2: billing?.line2 ?? null,
+          shippingCity: billing?.city ?? null,
+          shippingProvince: billing?.state ?? null,
+          shippingPostalCode: billing?.postal_code ?? null,
+          shippingCountry: billing?.country ?? null,
           paidAt: new Date(),
         },
       });
