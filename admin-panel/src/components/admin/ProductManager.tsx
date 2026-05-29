@@ -22,8 +22,6 @@ type ProductFormValues = {
   condition: string;
   dimensions: string;
   brand: string;
-  detailLayout: string;
-  clothColors: string;
   images: ProductImageFormValue[];
   available: boolean;
   featured: boolean;
@@ -44,8 +42,6 @@ const emptyFormValues: ProductFormValues = {
   condition: "excellent",
   dimensions: "",
   brand: "",
-  detailLayout: "default",
-  clothColors: "",
   images: [],
   available: true,
   featured: false,
@@ -70,8 +66,6 @@ function mapProductToForm(product: AdminProduct): ProductFormValues {
     condition: product.condition,
     dimensions: product.dimensions ?? "",
     brand: product.brand ?? "",
-    detailLayout: product.detailLayout,
-    clothColors: product.clothColors.join(", "),
     images: product.images.map((image) => ({
       url: image.url,
       alt: image.alt,
@@ -186,10 +180,6 @@ export default function ProductManager({
       ...form,
       startingPrice: Number(form.startingPrice),
       quantity: Number(form.quantity),
-      clothColors: form.clothColors
-        .split(",")
-        .map((item) => item.trim())
-        .filter(Boolean),
       images: form.images.map((image, index) => ({
         url: image.url,
         alt: image.alt || form.name || `Product image ${index + 1}`,
@@ -550,36 +540,6 @@ export default function ProductManager({
                     onChange={(event) =>
                       handleChange("dimensions", event.target.value)
                     }
-                  />
-                </div>
-              </div>
-
-              <div className="admin-form-grid">
-                <div className="admin-field">
-                  <label htmlFor="detailLayout">Detail Layout</label>
-                  <select
-                    id="detailLayout"
-                    value={form.detailLayout}
-                    onChange={(event) =>
-                      handleChange("detailLayout", event.target.value)
-                    }
-                  >
-                    <option value="pool">Pool</option>
-                    <option value="foosball">Foosball</option>
-                    <option value="ping-pong">Ping Pong</option>
-                    <option value="smoker">Smoker</option>
-                    <option value="default">Default</option>
-                  </select>
-                </div>
-                <div className="admin-field">
-                  <label htmlFor="clothColors">Cloth Colors</label>
-                  <input
-                    id="clothColors"
-                    value={form.clothColors}
-                    onChange={(event) =>
-                      handleChange("clothColors", event.target.value)
-                    }
-                    placeholder="green, blue, black"
                   />
                 </div>
               </div>
