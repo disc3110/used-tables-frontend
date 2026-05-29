@@ -33,7 +33,14 @@ export default function FoosballProductDetail({ product }: Props) {
               <h1 className="mt-4 text-5xl leading-[0.98] text-[#111f2d] [font-family:Georgia,Times,'Times_New_Roman',serif]">
                 {product.name}
               </h1>
-              <p className="mt-6 text-3xl font-semibold text-[#101f2e]">
+
+              {/* Pre-owned badge */}
+              <span className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#dfd3c1] bg-[#fdf8f1] px-3 py-1 text-xs font-medium uppercase tracking-[0.15em] text-[#8e6b38]">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#8e6b38]" />
+                Pre-owned
+              </span>
+
+              <p className="mt-5 text-3xl font-semibold text-[#101f2e]">
                 ${product.startingPrice}
               </p>
               <p className="mt-3 text-sm font-medium uppercase tracking-[0.18em] text-[#8e6b38]">

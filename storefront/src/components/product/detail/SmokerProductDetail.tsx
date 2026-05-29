@@ -81,7 +81,14 @@ export default function SmokerProductDetail({ product }: Props) {
               <h1 className="mt-4 text-5xl leading-[0.98] text-[#101f2e] [font-family:Georgia,Times,'Times_New_Roman',serif]">
                 {product.name}
               </h1>
-              <p className="mt-6 text-3xl font-semibold text-[#101f2e]">
+
+              {/* Pre-owned badge */}
+              <span className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#ddd4c7] bg-[#f6f3ed] px-3 py-1 text-xs font-medium uppercase tracking-[0.15em] text-[#6f6842]">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#6f6842]" />
+                Pre-owned
+              </span>
+
+              <p className="mt-5 text-3xl font-semibold text-[#101f2e]">
                 ${product.startingPrice}
               </p>
               <p className="mt-3 text-sm font-medium uppercase tracking-[0.18em] text-[#6f6842]">
