@@ -62,6 +62,7 @@ const validCategories = new Set<ProductCategory>([
   "pool-tables",
   "ping-pong",
   "foosball",
+  "grill",
 ]);
 const validConditions = new Set<ProductCondition>([
   "excellent",

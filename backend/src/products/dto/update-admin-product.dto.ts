@@ -15,7 +15,7 @@ import {
 } from "class-validator";
 import { AdminProductImageDto } from "./create-admin-product.dto";
 
-const categoryValues = ["pool-tables", "ping-pong", "foosball"] as const;
+const categoryValues = ["pool-tables", "ping-pong", "foosball", "grill"] as const;
 const conditionValues = ["excellent", "very-good", "good", "restored"] as const;
 const detailLayoutValues = [
   "pool",
