@@ -62,6 +62,7 @@ const validCategories = new Set<ProductCategory>([
   "pool-tables",
   "ping-pong",
   "foosball",
+  "grill",
 ]);
 const validConditions = new Set<ProductCondition>([
   "excellent",
@@ -115,11 +116,9 @@ function mapBackendProduct(product: BackendProduct): Product {
     ? (product.condition as ProductCondition)
     : "good";
 
-  const detailLayout = validDetailLayouts.has(
-    product.detailLayout as ProductDetailLayout,
-  )
-    ? (product.detailLayout as ProductDetailLayout)
-    : getCategoryDetailLayout(category);
+  // Always derive layout from category so the correct detail page is shown
+  // regardless of what value is stored in the backend.
+  const detailLayout = getCategoryDetailLayout(category);
 
   const clothColors = (product.clothColors ?? []).filter((color): color is ClothColor =>
     validClothColors.has(color as ClothColor),

@@ -2,7 +2,7 @@ import { ApiPropertyOptional } from "@nestjs/swagger";
 import { Transform, Type } from "class-transformer";
 import { IsBoolean, IsIn, IsInt, IsOptional, IsString, Max, Min } from "class-validator";
 
-const categoryValues = ["pool-tables", "ping-pong", "foosball"] as const;
+const categoryValues = ["pool-tables", "ping-pong", "foosball", "grill"] as const;
 const conditionValues = ["excellent", "very-good", "good", "restored"] as const;
 const sortValues = ["featured", "price-asc", "price-desc", "newest"] as const;
 
