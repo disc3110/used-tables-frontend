@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
@@ -18,6 +19,9 @@ type StripePaymentIntent = Awaited<
 type StripeCharge = Awaited<
   ReturnType<InstanceType<typeof import("stripe")>["charges"]["retrieve"]>
 >;
+type StripeWebhookEvent = ReturnType<
+  InstanceType<typeof import("stripe")>["webhooks"]["constructEvent"]
+>;
 
 function generateOrderNumber(): string {
   const date = new Date().toISOString().slice(0, 10).replace(/-/g, "");
@@ -27,6 +31,8 @@ function generateOrderNumber(): string {
 
 @Injectable()
 export class CheckoutService {
+  private readonly logger = new Logger(CheckoutService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly stripe: StripeService,
@@ -127,8 +133,18 @@ export class CheckoutService {
     return order;
   }
 
-  async handleWebhook(rawBody: Buffer, signature: string) {
-    let event: ReturnType<typeof this.stripe.client.webhooks.constructEvent>;
+  async handleWebhook(rawBody: Buffer | undefined, signature: string | undefined) {
+    if (!rawBody?.length) {
+      this.logger.warn("Stripe webhook rejected: missing raw request body.");
+      throw new BadRequestException("Missing Stripe webhook body.");
+    }
+
+    if (!signature) {
+      this.logger.warn("Stripe webhook rejected: missing Stripe-Signature header.");
+      throw new BadRequestException("Missing Stripe webhook signature.");
+    }
+
+    let event: StripeWebhookEvent;
 
     try {
       event = this.stripe.client.webhooks.constructEvent(
@@ -136,7 +152,9 @@ export class CheckoutService {
         signature,
         this.configService.getOrThrow<string>("STRIPE_WEBHOOK_SECRET"),
       );
-    } catch {
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unknown verification error";
+      this.logger.warn(`Stripe webhook rejected: ${message}`);
       throw new BadRequestException("Invalid Stripe webhook signature.");
     }
 
