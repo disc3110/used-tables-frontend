@@ -64,7 +64,14 @@ export default function PingPongProductDetail({ product }: Props) {
               <h1 className="mt-4 text-5xl leading-[0.98] text-[#0d1b29] [font-family:Georgia,Times,'Times_New_Roman',serif] md:text-6xl">
                 {product.name}
               </h1>
-              <p className="mt-6 text-3xl font-semibold text-[#101f2e]">
+
+              {/* Pre-owned badge */}
+              <span className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#d6e3dc] bg-[#f0f8f3] px-3 py-1 text-xs font-medium uppercase tracking-[0.15em] text-[#276f61]">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#276f61]" />
+                Pre-owned
+              </span>
+
+              <p className="mt-5 text-3xl font-semibold text-[#101f2e]">
                 ${product.startingPrice}
               </p>
               <p className="mt-2 text-sm font-medium uppercase tracking-[0.18em] text-[#276f61]">

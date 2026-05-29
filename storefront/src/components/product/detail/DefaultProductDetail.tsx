@@ -59,7 +59,14 @@ export default function DefaultProductDetail({ product }: Props) {
             <h1 className="mt-4 text-4xl leading-[1.02] text-[#0d1b29] [font-family:Georgia,Times,'Times_New_Roman',serif]">
               {product.name}
             </h1>
-            <p className="mt-5 text-3xl font-semibold text-[#101f2e]">
+
+            {/* Pre-owned badge */}
+            <span className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#e3d5c1] bg-[#fdf5e6] px-3 py-1 text-xs font-medium uppercase tracking-[0.15em] text-[#8c6831]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#c89f57]" />
+              Pre-owned
+            </span>
+
+            <p className="mt-4 text-3xl font-semibold text-[#101f2e]">
               ${product.startingPrice}
             </p>
             <p className="mt-3 text-sm font-medium uppercase tracking-[0.18em] text-[#8c6831]">
