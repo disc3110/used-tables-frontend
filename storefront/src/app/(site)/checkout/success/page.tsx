@@ -1,5 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getProductBySlug } from "@/lib/products";
+
+export const metadata: Metadata = {
+  title: "Checkout Status",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 type SuccessStatus = "success" | "unavailable" | "error";
 
@@ -48,7 +57,7 @@ export default async function CheckoutSuccessPage({
   const copy = copyByStatus[status];
 
   return (
-    <main className="bg-[#fbf7ef] px-6 py-20">
+    <div className="bg-[#fbf7ef] px-6 py-20">
       <section className="mx-auto max-w-3xl rounded-[2rem] border border-[#e3d5c1] bg-[#fffdfa] p-8 shadow-[0_22px_46px_rgba(47,35,22,0.08)] md:p-10">
         <p className="text-sm font-medium uppercase tracking-[0.24em] text-[#a46f24]">
           {copy.eyebrow}
@@ -89,6 +98,6 @@ export default async function CheckoutSuccessPage({
           ) : null}
         </div>
       </section>
-    </main>
+    </div>
   );
 }

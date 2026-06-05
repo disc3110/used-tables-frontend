@@ -22,7 +22,7 @@ export default function SmokerProductDetail({ product }: Props) {
   ];
 
   return (
-    <main className="bg-[linear-gradient(135deg,#f8f3ea_0%,#edf1ea_50%,#f6f6f1_100%)] px-6 py-16 md:py-20">
+    <div className="bg-[linear-gradient(135deg,#f8f3ea_0%,#edf1ea_50%,#f6f6f1_100%)] px-6 py-16 md:py-20">
       <div className="mx-auto max-w-7xl">
         <section className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_440px] lg:items-start">
           <div className="space-y-7">
@@ -119,6 +119,6 @@ export default function SmokerProductDetail({ product }: Props) {
           </aside>
         </section>
       </div>
-    </main>
+    </div>
   );
 }

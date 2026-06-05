@@ -2,7 +2,9 @@
 
 import Image from "next/image";
 import { useMemo, useState } from "react";
+import { buyNowProduct } from "@/app/actions/checkout";
 import ProductPurchaseActions from "@/components/product/ProductPurchaseActions";
+import { getCloudinaryImageUrl } from "@/lib/cloudinary";
 import type { Product } from "@/types/product";
 
 interface Props {
@@ -21,11 +23,13 @@ const accessoryPackages = [
     id: "standard",
     title: "Add Free Standard Package",
     priceLabel: "Included",
+    note: "Pre-owned accessory kit",
   },
   {
     id: "gold",
     title: "Upgrade to Gold Package $125",
     priceLabel: "+$125",
+    note: null,
   },
 ];
 
@@ -46,7 +50,11 @@ export default function PoolProductDetail({ product }: Props) {
       product.images.map((image, index) => ({
         id: image.id || `photo-${index}`,
         label: index === 0 ? "Main View" : `View ${index + 1}`,
-        src: image.url,
+        src: getCloudinaryImageUrl(image.url, {
+          width: 1400,
+          height: 1050,
+          trim: true,
+        }),
         alt: image.alt || product.name,
       })),
     [product],
@@ -68,19 +76,20 @@ export default function PoolProductDetail({ product }: Props) {
           ? "1 table available"
           : `${product.quantity} tables available`,
     },
-    { label: "Size", value: product.dimensions ?? "8 ft" },
-    {
-      label: "Material",
-      value: product.brand
-        ? `${product.brand} hardwood frame`
-        : "Hardwood frame",
-    },
-    { label: "Pockets", value: "Leather drop pockets" },
+    ...(product.dimensions
+      ? [{ label: "Size", value: product.dimensions }]
+      : []),
+    ...(product.material
+      ? [{ label: "Material", value: product.material }]
+      : []),
+    ...(product.pockets
+      ? [{ label: "Pockets", value: product.pockets }]
+      : []),
     { label: "Condition", value: conditionLabels[product.condition] },
   ];
 
   return (
-    <main className="bg-[radial-gradient(circle_at_top,#fffaf3_0%,#f6efe3_56%,#f2e9da_100%)] px-6 py-16 md:py-20">
+    <div className="bg-[radial-gradient(circle_at_top,#fffaf3_0%,#f6efe3_56%,#f2e9da_100%)] px-6 py-16 md:py-20">
       <div className="mx-auto max-w-7xl">
         <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-12">
 
@@ -131,6 +140,19 @@ export default function PoolProductDetail({ product }: Props) {
                 </div>
               </div>
             </div>
+
+            <form action={buyNowProduct} className="mt-6 hidden lg:block">
+              <input type="hidden" name="productSlug" value={product.slug} />
+              <button
+                type="submit"
+                disabled={!product.available || product.quantity < 1}
+                className="w-full rounded-full bg-[#f1c269] px-7 py-4 text-base font-medium text-[#102131] shadow-[0_14px_30px_rgba(200,159,87,0.2)] transition hover:-translate-y-0.5 hover:bg-[#eab653] disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {product.available && product.quantity > 0
+                  ? "Buy Now"
+                  : "Currently Unavailable"}
+              </button>
+            </form>
           </div>
 
           {/* ── Right column ── */}
@@ -216,8 +238,15 @@ export default function PoolProductDetail({ product }: Props) {
                       }`}
                     >
                       <div className="flex items-center justify-between gap-3">
-                        <span className="text-base font-medium text-[#132334]">
-                          {option.title}
+                        <span>
+                          <span className="block text-base font-medium text-[#132334]">
+                            {option.title}
+                          </span>
+                          {option.note ? (
+                            <span className="mt-1.5 block text-[0.68rem] uppercase tracking-[0.14em] text-[#8c7659]">
+                              {option.note}
+                            </span>
+                          ) : null}
                         </span>
                         <span
                           className={`rounded-full px-3 py-1 text-xs font-medium uppercase tracking-[0.14em] ${
@@ -276,6 +305,6 @@ export default function PoolProductDetail({ product }: Props) {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

@@ -1,5 +1,21 @@
+import type { Metadata } from "next";
 import CategoryLandingPage from "@/components/sections/CategoryLandingPage";
 import { getProductsByCategory } from "@/lib/products";
+
+export const metadata: Metadata = {
+  title: "Used Foosball Tables in Vancouver",
+  description:
+    "Browse quality used foosball tables available for pickup in Vancouver, British Columbia.",
+  alternates: {
+    canonical: "/products/foosball",
+  },
+  openGraph: {
+    title: "Used Foosball Tables in Vancouver",
+    description:
+      "Browse quality used foosball tables available for pickup in Vancouver.",
+    url: "/products/foosball",
+  },
+};
 
 export default async function FoosballPage() {
   const products = await getProductsByCategory("foosball");

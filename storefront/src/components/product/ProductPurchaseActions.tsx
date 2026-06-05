@@ -50,7 +50,7 @@ export default function ProductPurchaseActions({
         <button
           type="button"
           onClick={() => setIsQuestionOpen((current) => !current)}
-          className="inline-flex min-h-12 items-center justify-center rounded-full border bg-amber-50 border-[#d9c7ae] px-7 py-3.5 text-sm font-medium text-[#132334] transition hover:border-[#c89f57] hover:text-[#8b611f]"
+          className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#d9c7ae] bg-amber-50 px-7 py-3.5 text-sm font-medium text-[#132334] transition hover:border-[#c89f57] hover:text-[#8b611f]"
           aria-expanded={isQuestionOpen}
         >
           Ask a Question

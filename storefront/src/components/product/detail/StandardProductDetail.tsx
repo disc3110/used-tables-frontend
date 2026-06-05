@@ -6,7 +6,7 @@ interface Props {
 
 export default function StandardProductDetail({ product }: Props) {
   return (
-    <main className="px-6 py-16">
+    <div className="px-6 py-16">
       <div className="mx-auto max-w-4xl space-y-8">
         
         <div className="flex h-72 items-center justify-center rounded-xl bg-[#f2f3f7]">
@@ -32,6 +32,6 @@ export default function StandardProductDetail({ product }: Props) {
         </button>
 
       </div>
-    </main>
+    </div>
   );
 }

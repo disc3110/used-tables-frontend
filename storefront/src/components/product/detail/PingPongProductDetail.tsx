@@ -32,7 +32,7 @@ export default function PingPongProductDetail({ product }: Props) {
   const paragraphs = toparagraphs(product.description);
 
   return (
-    <main className="bg-[linear-gradient(135deg,#f7fbfb_0%,#eef5ef_48%,#f8f1e6_100%)] px-6 py-16 md:py-20">
+    <div className="bg-[linear-gradient(135deg,#f7fbfb_0%,#eef5ef_48%,#f8f1e6_100%)] px-6 py-16 md:py-20">
       <div className="mx-auto max-w-7xl space-y-8">
 
         {/* ── Hero: gallery + info ── */}
@@ -169,6 +169,6 @@ export default function PingPongProductDetail({ product }: Props) {
         )}
 
       </div>
-    </main>
+    </div>
   );
 }

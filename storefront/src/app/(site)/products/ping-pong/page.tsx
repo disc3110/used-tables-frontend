@@ -1,5 +1,21 @@
+import type { Metadata } from "next";
 import CategoryLandingPage from "@/components/sections/CategoryLandingPage";
 import { getProductsByCategory } from "@/lib/products";
+
+export const metadata: Metadata = {
+  title: "Used Ping Pong Tables in Vancouver",
+  description:
+    "Browse used ping pong tables available for pickup in Vancouver, serving customers across Metro Vancouver and British Columbia.",
+  alternates: {
+    canonical: "/products/ping-pong",
+  },
+  openGraph: {
+    title: "Used Ping Pong Tables in Vancouver",
+    description:
+      "Browse used ping pong tables available for pickup in Vancouver.",
+    url: "/products/ping-pong",
+  },
+};
 
 export default async function PingPongPage() {
   const products = await getProductsByCategory("ping-pong");

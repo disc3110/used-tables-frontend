@@ -1,18 +1,46 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import NavbarWrapper from "@/components/layout/NavbarWrapper";
-import { SITE_URL } from "@/lib/site";
+import { getBusinessJsonLd, serializeJsonLd } from "@/lib/seo";
+import {
+  absoluteUrl,
+  BUSINESS_NAME,
+  SITE_DESCRIPTION,
+  SITE_URL,
+} from "@/lib/site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "Used Billiard Store",
-  description: "Used pool tables, ping pong tables, and foosball tables.",
+  title: {
+    default: "Used Pool Tables Vancouver | Delivery & Installation",
+    template: `%s | ${BUSINESS_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  icons: {
+    icon: "/images/favicon.png",
+    apple: "/images/favicon.png",
+  },
   openGraph: {
-    title: "Used Billiard Store",
-    description: "Used pool tables, ping pong tables, and foosball tables.",
+    title: "Used Pool Tables Vancouver | Delivery & Installation",
+    description: SITE_DESCRIPTION,
     url: SITE_URL,
-    siteName: "Used Billiard Store",
+    siteName: BUSINESS_NAME,
+    locale: "en_CA",
     type: "website",
+    images: [
+      {
+        url: absoluteUrl("/images/hero/hero-room-vancouver.png"),
+        width: 1200,
+        height: 630,
+        alt: "Used pool table showroom in Vancouver",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Used Pool Tables Vancouver | Delivery & Installation",
+    description: SITE_DESCRIPTION,
+    images: [absoluteUrl("/images/hero/hero-room-vancouver.png")],
   },
 };
 
@@ -22,8 +50,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en-CA">
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: serializeJsonLd(getBusinessJsonLd()),
+          }}
+        />
         <NavbarWrapper />
         {children}
       </body>

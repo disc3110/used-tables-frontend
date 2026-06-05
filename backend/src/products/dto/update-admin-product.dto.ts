@@ -90,6 +90,18 @@ export class UpdateAdminProductDto {
   @MaxLength(120)
   brand?: string;
 
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @MaxLength(160)
+  material?: string | null;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @MaxLength(160)
+  pockets?: string | null;
+
   @ApiPropertyOptional({ enum: detailLayoutValues })
   @IsOptional()
   @IsIn(detailLayoutValues)

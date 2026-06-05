@@ -7,7 +7,7 @@ import ContactInquiryForm from "@/components/forms/ContactInquiryForm";
 const infoCards = [
   {
     title: "Location",
-    body: ["1644 Marine Drive SE, Vancouver, British Columbia, Canada"],
+    body: ["1644 Marine Drive SE, Vancouver, BC V5P 2R6, Canada"],
     icon: (
       <svg aria-hidden="true" viewBox="0 0 24 24" className="h-7 w-7">
         <path
@@ -31,7 +31,7 @@ const infoCards = [
   },
   {
     title: "Phone",
-    body: ["604 260 6446"],
+    body: ["604-779-4196"],
     icon: (
       <svg aria-hidden="true" viewBox="0 0 24 24" className="h-7 w-7">
         <path
@@ -229,10 +229,10 @@ export default function ContactPage() {
               Call Us
             </p>
             <Link
-              href="tel:6042606446"
+              href="tel:6047794196"
               className="mt-3 block text-3xl leading-[1] [font-family:Georgia,Times,'Times_New_Roman',serif] transition hover:text-[#f1c269]"
             >
-              604 260 6446
+              604-779-4196
             </Link>
             <p className="mt-3 text-sm leading-7 text-white/72">
               We’re happy to answer your questions.

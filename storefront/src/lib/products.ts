@@ -36,6 +36,10 @@ type BackendProduct = {
   clothColors?: string[];
   dimensions?: string | null;
   brand?: string | null;
+  material?: string | null;
+  pockets?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
   detailLayout: string;
   category: BackendCategory;
 };
@@ -70,13 +74,6 @@ const validConditions = new Set<ProductCondition>([
   "good",
   "restored",
 ]);
-const validDetailLayouts = new Set<ProductDetailLayout>([
-  "pool",
-  "foosball",
-  "ping-pong",
-  "smoker",
-  "default",
-]);
 const validClothColors = new Set<ClothColor>([
   "green",
   "blue",
@@ -105,6 +102,34 @@ function getCategoryDetailLayout(category: ProductCategory): ProductDetailLayout
     case "grill":
       return "smoker";
   }
+}
+
+function getImageAlt(
+  alt: string,
+  productName: string,
+  category: ProductCategory,
+  index: number,
+) {
+  const normalizedAlt = alt.trim();
+  const looksLikeFilename =
+    /\.(avif|gif|jpe?g|png|webp)$/i.test(normalizedAlt) ||
+    normalizedAlt.includes("_") ||
+    normalizedAlt.includes("-");
+
+  if (normalizedAlt && !looksLikeFilename) {
+    return normalizedAlt;
+  }
+
+  const categoryName =
+    category === "pool-tables"
+      ? "pool table"
+      : category === "ping-pong"
+        ? "ping pong table"
+        : category === "foosball"
+          ? "foosball table"
+          : "grill";
+
+  return `${productName} used ${categoryName} in Vancouver, view ${index + 1}`;
 }
 
 function mapBackendProduct(product: BackendProduct): Product {
@@ -138,14 +163,18 @@ function mapBackendProduct(product: BackendProduct): Product {
     available: product.available,
     featured: product.featured,
     quoteOnly: product.quoteOnly,
-    images: product.images.map((image) => ({
+    images: product.images.map((image, index) => ({
       id: image.id,
       url: image.url,
-      alt: image.alt,
+      alt: getImageAlt(image.alt, product.name, category, index),
     })),
     clothColors: clothColors.length > 0 ? clothColors : undefined,
     dimensions: product.dimensions ?? undefined,
     brand: product.brand ?? undefined,
+    material: product.material?.trim() || undefined,
+    pockets: product.pockets?.trim() || undefined,
+    createdAt: product.createdAt,
+    updatedAt: product.updatedAt,
     detailLayout,
   };
 }

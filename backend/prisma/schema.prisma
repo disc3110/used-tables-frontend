@@ -48,6 +48,8 @@ model Product {
   clothColors      String[]
   dimensions       String?
   brand            String?
+  material         String?
+  pockets          String?
   detailLayout     String         @default("default")
   categoryId       String
   category         Category       @relation(fields: [categoryId], references: [id], onDelete: Restrict)

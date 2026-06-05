@@ -22,6 +22,8 @@ type ProductFormValues = {
   condition: string;
   dimensions: string;
   brand: string;
+  material: string;
+  pockets: string;
   images: ProductImageFormValue[];
   available: boolean;
   featured: boolean;
@@ -42,6 +44,8 @@ const emptyFormValues: ProductFormValues = {
   condition: "excellent",
   dimensions: "",
   brand: "",
+  material: "",
+  pockets: "",
   images: [],
   available: true,
   featured: false,
@@ -66,6 +70,8 @@ function mapProductToForm(product: AdminProduct): ProductFormValues {
     condition: product.condition,
     dimensions: product.dimensions ?? "",
     brand: product.brand ?? "",
+    material: product.material ?? "",
+    pockets: product.pockets ?? "",
     images: product.images.map((image) => ({
       url: image.url,
       alt: image.alt,
@@ -180,6 +186,8 @@ export default function ProductManager({
       ...form,
       startingPrice: Number(form.startingPrice),
       quantity: Number(form.quantity),
+      material: form.material.trim() || null,
+      pockets: form.pockets.trim() || null,
       images: form.images.map((image, index) => ({
         url: image.url,
         alt: image.alt || form.name || `Product image ${index + 1}`,
@@ -543,6 +551,33 @@ export default function ProductManager({
                   />
                 </div>
               </div>
+
+              {form.categorySlug === "pool-tables" ? (
+                <div className="admin-form-grid">
+                  <div className="admin-field">
+                    <label htmlFor="material">Material</label>
+                    <input
+                      id="material"
+                      value={form.material}
+                      onChange={(event) =>
+                        handleChange("material", event.target.value)
+                      }
+                      placeholder="Only shown when provided"
+                    />
+                  </div>
+                  <div className="admin-field">
+                    <label htmlFor="pockets">Pockets</label>
+                    <input
+                      id="pockets"
+                      value={form.pockets}
+                      onChange={(event) =>
+                        handleChange("pockets", event.target.value)
+                      }
+                      placeholder="Only shown when provided"
+                    />
+                  </div>
+                </div>
+              ) : null}
 
               <div className="admin-field">
                 <label htmlFor="imageUpload">Product Images</label>
