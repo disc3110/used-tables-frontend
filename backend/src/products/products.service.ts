@@ -254,6 +254,8 @@ export class ProductsService {
         clothColors: payload.clothColors ?? [],
         dimensions: payload.dimensions,
         brand: payload.brand,
+        material: payload.material,
+        pockets: payload.pockets,
         detailLayout: payload.detailLayout ?? "default",
         categoryId: category.id,
         images: {
@@ -328,6 +330,8 @@ export class ProductsService {
           clothColors: payload.clothColors,
           dimensions: payload.dimensions,
           brand: payload.brand,
+          material: payload.material,
+          pockets: payload.pockets,
           detailLayout: payload.detailLayout,
           categoryId,
         },

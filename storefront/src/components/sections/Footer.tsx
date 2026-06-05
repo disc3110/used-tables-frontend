@@ -1,4 +1,9 @@
 import Link from "next/link";
+import {
+  BUSINESS_ADDRESS,
+  BUSINESS_NAME,
+  BUSINESS_PHONE_DISPLAY,
+} from "@/lib/site";
 
 const menuLinks = [
   { label: "Shop", href: "/products" },
@@ -11,18 +16,18 @@ const menuLinks = [
 ];
 
 const serviceAreas = [
-  "Vancouver - used pool tables Vancouver",
-  "West Vancouver - used pool tables West Vancouver",
-  "North Vancouver - used pool tables North Vancouver",
-  "Richmond - used pool tables Richmond",
-  "Burnaby - used pool tables Burnaby",
-  "Coquitlam - used pool tables Coquitlam",
-  "Surrey - used pool tables Surrey",
-  "Langley & more",
+  "Vancouver",
+  "West Vancouver",
+  "North Vancouver",
+  "Richmond",
+  "Burnaby",
+  "Coquitlam",
+  "Surrey",
+  "Langley and British Columbia",
 ];
 
 const contactLinks = [
-  { label: "604-779-4196", href: "tel:6047794196" },
+  { label: BUSINESS_PHONE_DISPLAY, href: "tel:6047794196" },
   {
     label: "sales@usedpooltablesvancouver.com",
     href: "mailto:sales@usedpooltablesvancouver.com",
@@ -38,11 +43,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 xl:grid-cols-4">
           <div className="max-w-sm">
             <h2 className="text-3xl leading-[1] [font-family:Georgia,Times,'Times_New_Roman',serif]">
-              Used Billiard Store
+              {BUSINESS_NAME}
             </h2>
             <p className="mt-5 text-base leading-8 text-white/72">
-              Quality used pool tables, ping pong tables, and grills delivered
-              across Metro Vancouver.
+              Quality used pool tables with installation included in Metro
+              Vancouver. Other game-room products are pickup only.
+            </p>
+            <p className="mt-3 text-sm leading-7 text-white/58">
+              30-day returns are available while products remain unused and in
+              good condition.
             </p>
           </div>
 
@@ -99,11 +108,21 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
+            <address className="mt-5 text-sm not-italic leading-7 text-white/62">
+              {BUSINESS_ADDRESS.streetAddress}
+              <br />
+              {BUSINESS_ADDRESS.addressLocality},{" "}
+              {BUSINESS_ADDRESS.addressRegion} {BUSINESS_ADDRESS.postalCode}
+              <br />
+              Canada
+            </address>
           </div>
         </div>
 
         <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-6 text-sm text-white/52 md:flex-row md:items-center md:justify-between">
-          <p>&copy; {currentYear} Used Billiard Store. All rights reserved.</p>
+          <p>
+            &copy; {currentYear} {BUSINESS_NAME}. All rights reserved.
+          </p>
           <div className="flex items-center gap-5">
             <span>Privacy Policy</span>
             <span>Terms</span>

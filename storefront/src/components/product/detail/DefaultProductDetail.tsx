@@ -17,7 +17,7 @@ export default function DefaultProductDetail({ product }: Props) {
   const primaryImage = product.images[0];
 
   return (
-    <main className="bg-[#fbf7ef] px-6 py-16 md:py-20">
+    <div className="bg-[#fbf7ef] px-6 py-16 md:py-20">
       <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[minmax(0,1fr)_430px] lg:items-start">
         <section className="space-y-7">
           <div className="overflow-hidden rounded-[2rem] border border-[#e3d5c1] bg-[#fffdfa] shadow-[0_22px_46px_rgba(47,35,22,0.08)]">
@@ -104,6 +104,6 @@ export default function DefaultProductDetail({ product }: Props) {
           </section>
         </aside>
       </div>
-    </main>
+    </div>
   );
 }

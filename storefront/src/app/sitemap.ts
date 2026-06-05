@@ -26,10 +26,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
     ...products.map((product) => ({
       url: `${SITE_URL}/products/${product.slug}`,
-      lastModified: now,
+      lastModified: product.updatedAt
+        ? new Date(product.updatedAt)
+        : product.createdAt
+          ? new Date(product.createdAt)
+          : now,
       changeFrequency: "weekly" as const,
       priority: 0.7,
     })),
   ];
 }
-

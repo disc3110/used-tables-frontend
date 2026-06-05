@@ -94,6 +94,18 @@ export class CreateAdminProductDto {
   @MaxLength(120)
   brand?: string;
 
+  @ApiPropertyOptional({ example: "Solid hardwood frame" })
+  @IsOptional()
+  @IsString()
+  @MaxLength(160)
+  material?: string | null;
+
+  @ApiPropertyOptional({ example: "Leather drop pockets" })
+  @IsOptional()
+  @IsString()
+  @MaxLength(160)
+  pockets?: string | null;
+
   @ApiPropertyOptional({ enum: detailLayoutValues, default: "default" })
   @IsOptional()
   @IsIn(detailLayoutValues)

@@ -3,9 +3,18 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About Us | Used Billiard Store",
+  title: "About Us",
   description:
     "Vancouver's trusted source for quality used pool tables, ping pong tables, foosball tables, and grills. Learn our story, our process, and why hundreds of customers trust us.",
+  alternates: {
+    canonical: "/about",
+  },
+  openGraph: {
+    title: "About Used Pool Tables Vancouver",
+    description:
+      "Learn about our inspection process and local service for used pool tables and game-room products.",
+    url: "/about",
+  },
 };
 
 const values = [

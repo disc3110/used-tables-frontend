@@ -15,6 +15,12 @@ interface CategoryLandingPageProps {
   sellTitle: string;
   sellImageSrc: string;
   sellImageAlt: string;
+  seoContent?: {
+    eyebrow: string;
+    title: string;
+    paragraphs: string[];
+    highlights: string[];
+  };
   products: Product[];
 }
 
@@ -50,9 +56,7 @@ export default function CategoryLandingPage({
   heroImageSrc,
   heroImageAlt,
   includedItems,
-  sellTitle,
-  sellImageSrc,
-  sellImageAlt,
+  seoContent,
   products,
 }: CategoryLandingPageProps) {
   return (
@@ -92,51 +96,7 @@ export default function CategoryLandingPage({
         </div>
       </section>
 
-      {includedItems?.length ? (
-        <section className="px-6 py-6 md:pb-8">
-          <div className="mx-auto max-w-7xl rounded-[1.9rem] border border-[#e4d8c8] bg-[#fffdfa] px-7 py-7 shadow-[0_14px_34px_rgba(47,35,22,0.06)] md:px-8 md:py-8">
-            <div className="mb-6">
-              <h2 className="text-[2rem] leading-[1.02] text-[#0f2030] [font-family:Georgia,Times,'Times_New_Roman',serif]">
-                Included with every pool table
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-              {includedItems.map((item, index) => (
-                <div
-                  key={item.title}
-                  className={`flex gap-4 md:px-2 ${index > 0 ? "md:border-l md:border-[#ece2d4] md:pl-6" : ""}`}
-                >
-                  <div className="mt-1 shrink-0 text-[#b27a2a]">
-                    <svg
-                      aria-hidden="true"
-                      viewBox="0 0 24 24"
-                      className="h-6 w-6"
-                    >
-                      <path
-                        d="M5 13l4 4L19 7"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-xl leading-[1.1] text-[#102131] [font-family:Georgia,Times,'Times_New_Roman',serif]">
-                      {item.title}
-                    </h3>
-                    <p className="mt-2 text-sm leading-7 text-[#4e5157]">
-                      {item.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      ) : (
+      {!includedItems?.length ? (
         <section
           id="buying-process"
           className="bg-[radial-gradient(circle_at_top,#fffaf3_0%,#f6efe3_56%,#f2e9da_100%)] px-6 py-18 md:py-20"
@@ -162,7 +122,7 @@ export default function CategoryLandingPage({
             </div>
           </div>
         </section>
-      )}
+      ) : null}
 
       <section id="browse-products" className="px-6 py-18 md:py-22">
         <div className="mx-auto max-w-7xl">
@@ -221,6 +181,88 @@ export default function CategoryLandingPage({
           )}
         </div>
       </section>
+
+      {includedItems?.length ? (
+        <section className="px-6 py-6 md:pb-8">
+          <div className="mx-auto max-w-7xl rounded-[1.9rem] border border-[#e4d8c8] bg-[#fffdfa] px-7 py-7 shadow-[0_14px_34px_rgba(47,35,22,0.06)] md:px-8 md:py-8">
+            <div className="mb-6">
+              <h2 className="text-[2rem] leading-[1.02] text-[#0f2030] [font-family:Georgia,Times,'Times_New_Roman',serif]">
+                Included with every pool table
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+              {includedItems.map((item, index) => (
+                <div
+                  key={item.title}
+                  className={`flex gap-4 md:px-2 ${index > 0 ? "md:border-l md:border-[#ece2d4] md:pl-6" : ""}`}
+                >
+                  <div className="mt-1 shrink-0 text-[#b27a2a]">
+                    <svg
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      className="h-6 w-6"
+                    >
+                      <path
+                        d="M5 13l4 4L19 7"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-xl leading-[1.1] text-[#102131] [font-family:Georgia,Times,'Times_New_Roman',serif]">
+                      {item.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-7 text-[#4e5157]">
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      {seoContent ? (
+        <section className="px-6 py-16 md:py-20">
+          <div className="mx-auto grid max-w-7xl gap-10 rounded-[2rem] border border-[#e4d8c8] bg-[#fffdfa] p-8 shadow-[0_18px_44px_rgba(47,35,22,0.07)] md:grid-cols-[minmax(0,1.25fr)_minmax(280px,0.75fr)] md:p-10">
+            <div>
+              <p className="text-sm font-medium uppercase tracking-[0.24em] text-[#a46f24]">
+                {seoContent.eyebrow}
+              </p>
+              <h2 className="mt-4 text-4xl leading-[1] text-[#0f2030] [font-family:Georgia,Times,'Times_New_Roman',serif] md:text-5xl">
+                {seoContent.title}
+              </h2>
+              <div className="mt-6 space-y-4 text-base leading-8 text-[#4e5157]">
+                {seoContent.paragraphs.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-[1.5rem] bg-[#f7efe3] p-6">
+              <h3 className="text-2xl text-[#102131] [font-family:Georgia,Times,'Times_New_Roman',serif]">
+                What to expect
+              </h3>
+              <ul className="mt-5 space-y-4">
+                {seoContent.highlights.map((highlight) => (
+                  <li key={highlight} className="flex items-start gap-3">
+                    <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#c89f57]" />
+                    <span className="text-sm leading-7 text-[#3f4a55]">
+                      {highlight}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section className="border-t border-[#eadfce] bg-[#f4ecdf] px-6 py-8">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 text-center md:flex-row md:items-center md:justify-center md:gap-10">

@@ -45,5 +45,9 @@ export interface Product {
   clothColors?: ClothColor[];
   dimensions?: string;
   brand?: string;
+  material?: string;
+  pockets?: string;
+  createdAt?: string;
+  updatedAt?: string;
   detailLayout: ProductDetailLayout;
 }

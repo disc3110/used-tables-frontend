@@ -22,7 +22,7 @@ export default function FoosballProductDetail({ product }: Props) {
   ];
 
   return (
-    <main className="bg-[radial-gradient(circle_at_top_left,#fffaf2_0%,#f4eee4_44%,#edf1ef_100%)] px-6 py-16 md:py-20">
+    <div className="bg-[radial-gradient(circle_at_top_left,#fffaf2_0%,#f4eee4_44%,#edf1ef_100%)] px-6 py-16 md:py-20">
       <div className="mx-auto max-w-7xl">
         <section className="grid gap-10 lg:grid-cols-[420px_minmax(0,1fr)] lg:items-start">
           <aside className="space-y-6 lg:sticky lg:top-28">
@@ -120,6 +120,6 @@ export default function FoosballProductDetail({ product }: Props) {
           </section>
         </section>
       </div>
-    </main>
+    </div>
   );
 }

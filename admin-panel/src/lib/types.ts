@@ -33,6 +33,8 @@ export type AdminProduct = {
   clothColors: string[];
   dimensions?: string | null;
   brand?: string | null;
+  material?: string | null;
+  pockets?: string | null;
   detailLayout: string;
   category: AdminCategory;
   images: AdminProductImage[];

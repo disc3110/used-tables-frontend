@@ -1,4 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Order Confirmation",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 interface OrderConfirmationPageProps {
   searchParams: Promise<{ session_id?: string }>;
@@ -99,7 +108,7 @@ export default async function OrderConfirmationPage({
   const isPaid = order.paymentStatus === "PAID";
 
   return (
-    <main className="bg-[#fbf7ef] px-6 py-20">
+    <div className="bg-[#fbf7ef] px-6 py-20">
       <section className="mx-auto max-w-3xl rounded-[2rem] border border-[#e3d5c1] bg-[#fffdfa] p-8 shadow-[0_22px_46px_rgba(47,35,22,0.08)] md:p-10">
         <p className="text-sm font-medium uppercase tracking-[0.24em] text-[#a46f24]">
           {isPaid ? "Order Confirmed" : "Order Received"}
@@ -166,7 +175,7 @@ export default async function OrderConfirmationPage({
           </Link>
         </div>
       </section>
-    </main>
+    </div>
   );
 }
 
@@ -193,7 +202,7 @@ function DetailRow({
 
 function ErrorView({ message }: { message: string }) {
   return (
-    <main className="bg-[#fbf7ef] px-6 py-20">
+    <div className="bg-[#fbf7ef] px-6 py-20">
       <section className="mx-auto max-w-3xl rounded-[2rem] border border-[#e3d5c1] bg-[#fffdfa] p-8 shadow-[0_22px_46px_rgba(47,35,22,0.08)] md:p-10">
         <p className="text-sm font-medium uppercase tracking-[0.24em] text-[#a46f24]">
           Order Lookup
@@ -217,6 +226,6 @@ function ErrorView({ message }: { message: string }) {
           </Link>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

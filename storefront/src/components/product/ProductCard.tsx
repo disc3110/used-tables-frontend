@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { getCloudinaryImageUrl } from "@/lib/cloudinary";
 import type { Product } from "@/types/product";
 
 interface ProductCardProps {
@@ -19,6 +20,15 @@ export default function ProductCard({
   variant = "default",
 }: ProductCardProps) {
   const isFeatured = variant === "featured";
+  const isPoolTable = product.category === "pool-tables";
+  const mainImage = product.images?.[0];
+  const imageUrl = mainImage
+    ? getCloudinaryImageUrl(mainImage.url, {
+        width: 1200,
+        height: 900,
+        trim: isPoolTable,
+      })
+    : null;
 
   return (
     <Link href={`/products/${product.slug}`} className="group block">
@@ -34,14 +44,16 @@ export default function ProductCard({
             </span>
           </div>
 
-          {product.images && product.images.length > 0 ? (
+          {mainImage && imageUrl ? (
             <Image
-              src={product.images[0].url}
-              alt={product.images[0].alt || product.name}
+              src={imageUrl}
+              alt={mainImage.alt || product.name}
               fill
               sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 25vw"
               className={`transition duration-500 group-hover:scale-[1.04] ${
-                isFeatured ? "object-contain p-6" : "object-cover"
+                isFeatured || isPoolTable
+                  ? "object-contain p-5"
+                  : "object-cover"
               }`}
             />
           ) : (
