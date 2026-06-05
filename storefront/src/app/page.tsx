@@ -6,15 +6,27 @@ import WhyUsSection from "@/components/sections/WhyUsSection";
 import CTASection from "@/components/sections/CTASection";
 import Footer from "@/components/sections/Footer";
 import { getFeaturedProducts } from "@/lib/products";
+import {
+  BUSINESS_NAME,
+  HOME_TITLE,
+  SITE_DESCRIPTION,
+  SITE_URL,
+} from "@/lib/site";
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Used Pool Tables Vancouver | Delivery & Installation",
+    absolute: HOME_TITLE,
   },
-  description:
-    "Browse quality used pool tables in Vancouver. Professional installation is included for pool tables in Metro Vancouver, with inventory available to buyers across British Columbia.",
+  description: SITE_DESCRIPTION,
   alternates: {
-    canonical: "/",
+    canonical: SITE_URL,
+  },
+  openGraph: {
+    title: HOME_TITLE,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    type: "website",
+    siteName: BUSINESS_NAME,
   },
 };
 

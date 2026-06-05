@@ -5,6 +5,7 @@ import { getBusinessJsonLd, serializeJsonLd } from "@/lib/seo";
 import {
   absoluteUrl,
   BUSINESS_NAME,
+  HOME_TITLE,
   SITE_DESCRIPTION,
   SITE_URL,
 } from "@/lib/site";
@@ -12,16 +13,33 @@ import {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Used Pool Tables Vancouver | Delivery & Installation",
+    default: HOME_TITLE,
     template: `%s | ${BUSINESS_NAME}`,
   },
   description: SITE_DESCRIPTION,
   icons: {
-    icon: "/images/favicon.png",
-    apple: "/images/favicon.png",
+    icon: [
+      {
+        url: "/favicon-32x32.png",
+        type: "image/png",
+        sizes: "32x32",
+      },
+      {
+        url: "/favicon-16x16.png",
+        type: "image/png",
+        sizes: "16x16",
+      },
+    ],
+    apple: [
+      {
+        url: "/apple-touch-icon.png",
+        type: "image/png",
+        sizes: "180x180",
+      },
+    ],
   },
   openGraph: {
-    title: "Used Pool Tables Vancouver | Delivery & Installation",
+    title: HOME_TITLE,
     description: SITE_DESCRIPTION,
     url: SITE_URL,
     siteName: BUSINESS_NAME,
@@ -38,7 +56,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Used Pool Tables Vancouver | Delivery & Installation",
+    title: HOME_TITLE,
     description: SITE_DESCRIPTION,
     images: [absoluteUrl("/images/hero/hero-room-vancouver.png")],
   },
