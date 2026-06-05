@@ -2,6 +2,8 @@ import type { Product, ProductCategory } from "@/types/product";
 import {
   absoluteUrl,
   BUSINESS_ADDRESS,
+  BUSINESS_DESCRIPTION,
+  BUSINESS_EMAIL,
   BUSINESS_NAME,
   BUSINESS_PHONE,
   CURRENCY,
@@ -38,11 +40,13 @@ export function getBusinessJsonLd() {
         inLanguage: "en-CA",
       },
       {
-        "@type": "Store",
+        "@type": ["LocalBusiness", "Store"],
         "@id": `${SITE_URL}/#business`,
         name: BUSINESS_NAME,
         url: SITE_URL,
         telephone: BUSINESS_PHONE,
+        email: BUSINESS_EMAIL,
+        description: BUSINESS_DESCRIPTION,
         image: absoluteUrl("/images/hero/hero-room-vancouver.png"),
         currenciesAccepted: CURRENCY,
         address: {
