@@ -44,6 +44,7 @@ export default function ProductPurchaseActions({
       <div className="flex flex-col gap-4 sm:flex-row">
         <form action={buyNowProduct}>
           <input type="hidden" name="productSlug" value={productSlug} />
+          <input type="hidden" name="accessoryPackage" value={accessoryPackage} />
           <BuyNowButton available={canBuy} />
         </form>
 

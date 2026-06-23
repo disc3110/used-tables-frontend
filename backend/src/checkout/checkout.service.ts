@@ -39,7 +39,7 @@ export class CheckoutService {
     private readonly configService: ConfigService,
   ) {}
 
-  async createSession(productSlug: string, quantity = 1) {
+  async createSession(productSlug: string, quantity = 1, accessoryPackage: "standard" | "gold" = "standard") {
     const product = await this.prisma.product.findUnique({
       where: { slug: productSlug },
       select: {
@@ -62,14 +62,16 @@ export class CheckoutService {
     }
 
     const unitPriceCents = product.startingPrice * 100;
-    const totalCents = unitPriceCents * quantity;
+    const productTotalCents = unitPriceCents * quantity;
+    const upgradeAmountCents = accessoryPackage === "gold" ? 22500 : 0;
+    const subtotalCents = productTotalCents + upgradeAmountCents;
     const storefrontUrl = this.configService.getOrThrow<string>("FRONTEND_URL");
 
     const order = await this.prisma.order.create({
       data: {
         orderNumber: generateOrderNumber(),
-        subtotalCents: totalCents,
-        totalCents,
+        subtotalCents,
+        totalCents: subtotalCents,
         items: {
           create: [
             {
@@ -78,30 +80,47 @@ export class CheckoutService {
               sku: product.sku,
               quantity,
               unitPriceCents,
-              totalCents,
+              totalCents: productTotalCents,
             },
           ],
         },
       },
     });
 
+    const lineItems: Parameters<typeof this.stripe.client.checkout.sessions.create>[0]["line_items"] = [
+      {
+        price_data: {
+          currency: "cad",
+          product_data: {
+            name: product.name,
+            description: `SKU: ${product.sku}`,
+          },
+          unit_amount: unitPriceCents,
+          tax_behavior: "exclusive",
+        },
+        quantity,
+      },
+    ];
+
+    if (accessoryPackage === "gold") {
+      lineItems.push({
+        price_data: {
+          currency: "cad",
+          product_data: {
+            name: "Gold Accessory Package",
+            description: "Premium accessory upgrade for your pool table",
+          },
+          unit_amount: 22500,
+          tax_behavior: "exclusive",
+        },
+        quantity: 1,
+      });
+    }
+
     const session = await this.stripe.client.checkout.sessions.create({
       mode: "payment",
       automatic_tax: { enabled: true },
-      line_items: [
-        {
-          price_data: {
-            currency: "cad",
-            product_data: {
-              name: product.name,
-              description: `SKU: ${product.sku}`,
-            },
-            unit_amount: unitPriceCents,
-            tax_behavior: "exclusive",
-          },
-          quantity,
-        },
-      ],
+      line_items: lineItems,
       success_url: `${storefrontUrl}/order-confirmation?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${storefrontUrl}/products/${product.slug}`,
       phone_number_collection: { enabled: true },
