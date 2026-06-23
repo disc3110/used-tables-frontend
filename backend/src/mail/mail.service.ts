@@ -28,6 +28,7 @@ export class MailService {
         },
         body: JSON.stringify({
           from: this.from,
+          reply_to: "sales@usedpooltablesvancouver.com",
           to: Array.isArray(options.to) ? options.to : [options.to],
           subject: options.subject,
           html: options.html,
