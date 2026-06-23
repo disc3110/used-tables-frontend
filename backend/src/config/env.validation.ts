@@ -15,6 +15,8 @@ interface EnvironmentVariables {
   CLOUDINARY_FOLDER?: string;
   STRIPE_SECRET_KEY: string;
   STRIPE_WEBHOOK_SECRET: string;
+  RESEND_API_KEY: string;
+  RESEND_FROM: string;
   ADMIN_SEED_NAME?: string;
   ADMIN_SEED_EMAIL?: string;
   ADMIN_SEED_PASSWORD?: string;
@@ -38,6 +40,8 @@ const envSchema = Joi.object<EnvironmentVariables>({
   CLOUDINARY_FOLDER: Joi.string().trim().default("used-billiard-store"),
   STRIPE_SECRET_KEY: Joi.string().trim().required(),
   STRIPE_WEBHOOK_SECRET: Joi.string().trim().required(),
+  RESEND_API_KEY: Joi.string().trim().required(),
+  RESEND_FROM: Joi.string().email({ tlds: { allow: false } }).required(),
   ADMIN_SEED_NAME: Joi.string().trim().default("Admin User"),
   ADMIN_SEED_EMAIL: Joi.string().trim().email().default("admin@usedbilliardstore.ca"),
   ADMIN_SEED_PASSWORD: Joi.string().min(8).default("admin12345"),
