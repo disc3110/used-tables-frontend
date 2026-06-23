@@ -65,13 +65,17 @@ export class CheckoutService {
     const productTotalCents = unitPriceCents * quantity;
     const upgradeAmountCents = accessoryPackage === "gold" ? 22500 : 0;
     const subtotalCents = productTotalCents + upgradeAmountCents;
+    // BC taxes: GST 5% + PST 7% = 12%. Calculated manually until Stripe Tax is configured.
+    const taxCents = Math.round(subtotalCents * 0.12);
+    const totalCents = subtotalCents + taxCents;
     const storefrontUrl = this.configService.getOrThrow<string>("FRONTEND_URL");
 
     const order = await this.prisma.order.create({
       data: {
         orderNumber: generateOrderNumber(),
         subtotalCents,
-        totalCents: subtotalCents,
+        taxCents,
+        totalCents,
         items: {
           create: [
             {
@@ -87,40 +91,47 @@ export class CheckoutService {
       },
     });
 
-    const lineItems: Parameters<typeof this.stripe.client.checkout.sessions.create>[0]["line_items"] = [
-      {
-        price_data: {
-          currency: "cad",
-          product_data: {
-            name: product.name,
-            description: `SKU: ${product.sku}`,
-          },
-          unit_amount: unitPriceCents,
-          tax_behavior: "exclusive",
-        },
-        quantity,
-      },
-    ];
-
-    if (accessoryPackage === "gold") {
-      lineItems.push({
-        price_data: {
-          currency: "cad",
-          product_data: {
-            name: "Gold Accessory Package",
-            description: "Premium accessory upgrade for your pool table",
-          },
-          unit_amount: 22500,
-          tax_behavior: "exclusive",
-        },
-        quantity: 1,
-      });
-    }
-
     const session = await this.stripe.client.checkout.sessions.create({
       mode: "payment",
-      automatic_tax: { enabled: true },
-      line_items: lineItems,
+      line_items: [
+        {
+          price_data: {
+            currency: "cad",
+            product_data: {
+              name: product.name,
+              description: `SKU: ${product.sku}`,
+            },
+            unit_amount: unitPriceCents,
+          },
+          quantity,
+        },
+        ...(accessoryPackage === "gold"
+          ? [
+              {
+                price_data: {
+                  currency: "cad",
+                  product_data: {
+                    name: "Gold Accessory Package",
+                    description: "Premium accessory upgrade for your pool table",
+                  },
+                  unit_amount: 22500,
+                },
+                quantity: 1 as const,
+              },
+            ]
+          : []),
+        {
+          price_data: {
+            currency: "cad",
+            product_data: {
+              name: "BC Taxes (GST 5% + PST 7%)",
+              description: "British Columbia Goods & Services Tax and Provincial Sales Tax",
+            },
+            unit_amount: taxCents,
+          },
+          quantity: 1 as const,
+        },
+      ],
       success_url: `${storefrontUrl}/order-confirmation?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${storefrontUrl}/products/${product.slug}`,
       phone_number_collection: { enabled: true },
@@ -225,10 +236,6 @@ export class CheckoutService {
         ? session.payment_intent
         : (session.payment_intent?.id ?? null);
 
-    // Capture tax and final total from Stripe (set by automatic_tax)
-    const taxCents = session.total_details?.amount_tax ?? 0;
-    const totalCents = session.amount_total ?? order.totalCents;
-
     await this.prisma.$transaction(async (tx) => {
       await tx.order.update({
         where: { id: orderId },
@@ -246,8 +253,6 @@ export class CheckoutService {
           shippingProvince: billing?.state ?? null,
           shippingPostalCode: billing?.postal_code ?? null,
           shippingCountry: billing?.country ?? null,
-          taxCents,
-          totalCents,
           paidAt: new Date(),
         },
       });
