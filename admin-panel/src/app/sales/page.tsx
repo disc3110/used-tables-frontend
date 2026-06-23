@@ -138,6 +138,7 @@ export default async function SalesPage({ searchParams }: SalesPageProps) {
   const paidOrders = orders.filter((o) => o.paymentStatus === "PAID");
   const abandonedOrders = orders.filter((o) => o.paymentStatus !== "PAID");
   const totalRevenueCents = paidOrders.reduce((sum, o) => sum + o.totalCents, 0);
+  const totalTaxCents = paidOrders.reduce((sum, o) => sum + (o.taxCents ?? 0), 0);
   const totalItems = paidOrders.reduce(
     (sum, o) => sum + o.items.reduce((s, i) => s + i.quantity, 0),
     0,
@@ -192,8 +193,13 @@ export default async function SalesPage({ searchParams }: SalesPageProps) {
           <p className="metric-value">{totalItems}</p>
         </article>
         <article className="admin-card admin-card-pad">
-          <p className="metric-label">Revenue</p>
+          <p className="metric-label">Revenue (incl. tax)</p>
           <p className="metric-value">{formatMoney(totalRevenueCents)}</p>
+          {totalTaxCents > 0 && (
+            <p className="meta" style={{ marginTop: 6 }}>
+              GST + PST collected: {formatMoney(totalTaxCents)}
+            </p>
+          )}
         </article>
       </section>
 
@@ -290,6 +296,18 @@ export default async function SalesPage({ searchParams }: SalesPageProps) {
                                 {order.items
                                   .map((i) => `${i.productName} × ${i.quantity} (${formatMoney(i.unitPriceCents)} ea)`)
                                   .join(", ")}
+                              </div>
+
+                              <div className="meta">
+                                <strong>Subtotal:</strong> {formatMoney(order.subtotalCents)}
+                                {order.taxCents > 0 && (
+                                  <span style={{ marginLeft: 12 }}>
+                                    <strong>GST + PST (12%):</strong> {formatMoney(order.taxCents)}
+                                    <span style={{ marginLeft: 12 }}>
+                                      <strong>Total:</strong> {formatMoney(order.totalCents)}
+                                    </span>
+                                  </span>
+                                )}
                               </div>
 
                               {order.stripeSessionId ? (

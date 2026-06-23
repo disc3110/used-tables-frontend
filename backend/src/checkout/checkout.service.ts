@@ -87,6 +87,7 @@ export class CheckoutService {
 
     const session = await this.stripe.client.checkout.sessions.create({
       mode: "payment",
+      automatic_tax: { enabled: true },
       line_items: [
         {
           price_data: {
@@ -96,6 +97,7 @@ export class CheckoutService {
               description: `SKU: ${product.sku}`,
             },
             unit_amount: unitPriceCents,
+            tax_behavior: "exclusive",
           },
           quantity,
         },
@@ -204,6 +206,10 @@ export class CheckoutService {
         ? session.payment_intent
         : (session.payment_intent?.id ?? null);
 
+    // Capture tax and final total from Stripe (set by automatic_tax)
+    const taxCents = session.total_details?.amount_tax ?? 0;
+    const totalCents = session.amount_total ?? order.totalCents;
+
     await this.prisma.$transaction(async (tx) => {
       await tx.order.update({
         where: { id: orderId },
@@ -221,6 +227,8 @@ export class CheckoutService {
           shippingProvince: billing?.state ?? null,
           shippingPostalCode: billing?.postal_code ?? null,
           shippingCountry: billing?.country ?? null,
+          taxCents,
+          totalCents,
           paidAt: new Date(),
         },
       });
