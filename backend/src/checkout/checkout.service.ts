@@ -5,8 +5,12 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { MailService } from "../mail/mail.service";
+import { purchaseConfirmationCustomer, purchaseInternal } from "../mail/mail.templates";
 import { PrismaService } from "../prisma/prisma.service";
 import { StripeService } from "../stripe/stripe.service";
+
+const SALES_EMAIL = "sales@usedpooltablesvancouver.com";
 
 // Shorthand types derived from the Stripe client so we stay type-safe without
 // importing the namespace directly (which conflicts with CommonJS exports).
@@ -37,6 +41,7 @@ export class CheckoutService {
     private readonly prisma: PrismaService,
     private readonly stripe: StripeService,
     private readonly configService: ConfigService,
+    private readonly mail: MailService,
   ) {}
 
   async createSession(productSlug: string, quantity = 1, accessoryPackage: "standard" | "gold" = "standard") {
@@ -278,6 +283,41 @@ export class CheckoutService {
         }
       }
     });
+
+    // Fire-and-forget emails — don't let a mail failure affect the webhook response
+    const productName = order.items[0]?.productName ?? "Pool Table";
+    const customerName = customer?.name ?? "Customer";
+    const customerEmail = customer?.email ?? null;
+
+    void this.mail.send({
+      to: SALES_EMAIL,
+      subject: `New Order — ${order.orderNumber} — ${productName}`,
+      html: purchaseInternal({
+        orderNumber: order.orderNumber,
+        productName,
+        subtotalCents: order.subtotalCents,
+        taxCents: order.taxCents,
+        totalCents: order.totalCents,
+        customerName,
+        customerEmail,
+        customerPhone: customer?.phone ?? null,
+        shippingCity: billing?.city ?? null,
+        shippingProvince: billing?.state ?? null,
+      }),
+    });
+
+    if (customerEmail) {
+      void this.mail.send({
+        to: customerEmail,
+        subject: `Your order is confirmed — ${productName}`,
+        html: purchaseConfirmationCustomer({
+          orderNumber: order.orderNumber,
+          customerName,
+          productName,
+          totalCents: order.totalCents,
+        }),
+      });
+    }
   }
 
   private async handleCheckoutExpired(session: StripeCheckoutSession) {
