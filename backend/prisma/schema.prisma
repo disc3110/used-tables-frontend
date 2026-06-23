@@ -154,6 +154,7 @@ model Order {
   shippingPostalCode    String?
   shippingCountry       String?
   subtotalCents         Int
+  taxCents              Int           @default(0)
   totalCents            Int
   currency              String        @default("cad")
   paidAt                DateTime?

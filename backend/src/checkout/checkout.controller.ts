@@ -23,7 +23,11 @@ export class CheckoutController {
   @ApiOperation({ summary: "Create a Stripe Checkout session for a product." })
   @ApiCreatedResponse({ description: "Returns the Stripe hosted checkout URL." })
   createSession(@Body() body: CreateCheckoutSessionDto) {
-    return this.checkoutService.createSession(body.productSlug, body.quantity ?? 1);
+    return this.checkoutService.createSession(
+      body.productSlug,
+      body.quantity ?? 1,
+      body.accessoryPackage ?? "standard",
+    );
   }
 
   @Get("orders/by-session/:sessionId")

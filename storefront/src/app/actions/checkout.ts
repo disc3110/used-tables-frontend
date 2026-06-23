@@ -12,6 +12,7 @@ function getValue(formData: FormData, key: string) {
 
 export async function buyNowProduct(formData: FormData) {
   const productSlug = getValue(formData, "productSlug");
+  const accessoryPackage = getValue(formData, "accessoryPackage") || "standard";
 
   if (!productSlug) {
     redirect("/products");
@@ -24,7 +25,7 @@ export async function buyNowProduct(formData: FormData) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       cache: "no-store",
-      body: JSON.stringify({ productSlug, quantity: 1 }),
+      body: JSON.stringify({ productSlug, quantity: 1, accessoryPackage }),
     });
 
     if (response.ok) {

@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { IsInt, IsOptional, IsString, Max, Min } from "class-validator";
+import { IsIn, IsInt, IsOptional, IsString, Max, Min } from "class-validator";
 
 export class CreateCheckoutSessionDto {
   @ApiProperty({ example: "BERINGER-used-pool-table" })
@@ -12,4 +12,9 @@ export class CreateCheckoutSessionDto {
   @Min(1)
   @Max(10)
   quantity?: number;
+
+  @ApiPropertyOptional({ enum: ["standard", "gold"], default: "standard" })
+  @IsOptional()
+  @IsIn(["standard", "gold"])
+  accessoryPackage?: "standard" | "gold";
 }

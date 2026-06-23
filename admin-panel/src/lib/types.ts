@@ -140,6 +140,7 @@ export type AdminOrder = {
   shippingPostalCode?: string | null;
   shippingCountry?: string | null;
   subtotalCents: number;
+  taxCents: number;
   totalCents: number;
   currency: string;
   paidAt?: string | null;

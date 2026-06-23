@@ -27,8 +27,8 @@ const accessoryPackages = [
   },
   {
     id: "gold",
-    title: "Upgrade to Gold Package $125",
-    priceLabel: "+$125",
+    title: "Upgrade to Gold Package $225",
+    priceLabel: "+$225",
     note: null,
   },
 ];
@@ -143,6 +143,7 @@ export default function PoolProductDetail({ product }: Props) {
 
             <form action={buyNowProduct} className="mt-6 hidden lg:block">
               <input type="hidden" name="productSlug" value={product.slug} />
+              <input type="hidden" name="accessoryPackage" value={selectedPackage} />
               <button
                 type="submit"
                 disabled={!product.available || product.quantity < 1}
