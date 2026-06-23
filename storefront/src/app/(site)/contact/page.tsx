@@ -214,10 +214,10 @@ export default function ContactPage() {
               Prefer Email?
             </p>
             <Link
-              href="mailto:info@usedpooltables.ca"
+              href="mailto:sales@usedpooltablesvancouver.com"
               className="mt-3 block text-3xl leading-[1] [font-family:Georgia,Times,'Times_New_Roman',serif] transition hover:text-[#f1c269]"
             >
-              info@usedpooltables.ca
+              sales@usedpooltablesvancouver.com
             </Link>
             <p className="mt-3 text-sm leading-7 text-white/72">
               We typically respond within 24 hours.
